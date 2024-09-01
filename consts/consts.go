@@ -21,7 +21,7 @@ var REDIS_ADDR string
 
 const DO_NOT_REPLY = "Please do not reply to this message. It was sent from a notification-only email address that we don't monitor."
 
-func Load() {
+func init() {
 	env.Load()
 
 	godotenv.Load("consts.env")
