@@ -63,6 +63,8 @@ func main() {
 			go SendEmailResetEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_EMAIL_UPDATED:
 			go SendEmailUpdatedEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_ACCOUNT_UPDATED:
+			go SendAccountUpdatedEmail(&qe)
 		default:
 			log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 		}

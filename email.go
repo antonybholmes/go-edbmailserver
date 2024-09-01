@@ -131,6 +131,17 @@ func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 	return nil
 }
 
+func SendAccountUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+
+	file := "templates/email/account/updated.html"
+
+	go SendEmailWithToken("Account Updated",
+		qe,
+		file)
+
+	return nil
+}
+
 func SendEmailWithToken(subject string,
 	qe *mailer.RedisQueueEmail,
 	file string) error {
