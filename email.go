@@ -41,6 +41,96 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 	return nil
 }
 
+func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
+
+	var file string
+
+	if qe.CallBackUrl != "" {
+		file = "templates/email/verify/web.html"
+	} else {
+		file = "templates/email/verify/api.html"
+	}
+
+	go SendEmailWithToken("Email Address Verification",
+		qe,
+		file)
+
+	return nil
+}
+
+func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
+
+	file := "templates/email/verify/verified.html"
+
+	go SendEmailWithToken("Email Address Verified",
+		qe,
+		file)
+
+	return nil
+}
+
+func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
+
+	var file string
+
+	if qe.CallBackUrl != "" {
+		file = "templates/email/password/reset/web.html"
+	} else {
+		file = "templates/email/password/reset/api.html"
+	}
+
+	go SendEmailWithToken("Password Reset",
+		qe,
+		file)
+
+	return nil
+}
+
+func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+
+	var file string
+
+	if qe.CallBackUrl != "" {
+		file = "templates/email/password/switch-to-passwordless.html"
+	} else {
+		file = "templates/email/password/updated.html"
+	}
+
+	go SendEmailWithToken("Password Updated",
+		qe,
+		file)
+
+	return nil
+}
+
+func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
+
+	var file string
+
+	if qe.CallBackUrl != "" {
+		file = "templates/email/email/reset/web.html"
+	} else {
+		file = "templates/email/email/reset/api.html"
+	}
+
+	go SendEmailWithToken("Email Reset",
+		qe,
+		file)
+
+	return nil
+}
+
+func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+
+	file := "templates/email/email/updated.html"
+
+	go SendEmailWithToken("Email Updated",
+		qe,
+		file)
+
+	return nil
+}
+
 func SendEmailWithToken(subject string,
 	qe *mailer.RedisQueueEmail,
 	file string) error {
@@ -86,7 +176,9 @@ func SendEmailWithToken(subject string,
 			params.Set(URL_PARAM, qe.VisitUrl)
 		}
 
-		params.Set(JWT_PARAM, qe.Token)
+		if qe.Token != "" {
+			params.Set(JWT_PARAM, qe.Token)
+		}
 
 		callbackUrl.RawQuery = params.Encode()
 

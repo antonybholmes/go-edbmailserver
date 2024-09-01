@@ -49,8 +49,20 @@ func main() {
 		}
 
 		switch qe.EmailType {
+		case mailer.REDIS_EMAIL_TYPE_VERIFY:
+			go SendVerifyEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_VERIFIED:
+			go SendVerifiedEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
 			go SendPasswordlessSigninEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_PASSWORD_RESET:
+			go SendPasswordResetEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_PASSWORD_UPDATED:
+			go SendPasswordUpdatedEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_EMAIL_RESET:
+			go SendEmailResetEmail(&qe)
+		case mailer.REDIS_EMAIL_TYPE_EMAIL_UPDATED:
+			go SendEmailUpdatedEmail(&qe)
 		default:
 			log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 		}
