@@ -19,7 +19,7 @@ var rdb = redis.NewClient(&redis.Options{
 })
 
 func main() {
-	log.Debug().Msgf("go-edb-server-mailer")
+	log.Debug().Msgf("go-edb-server-mailer %s", consts.REDIS_ADDR)
 
 	subscriber := rdb.Subscribe(ctx, "email")
 
