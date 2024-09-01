@@ -6,6 +6,8 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
+	"github.com/antonybholmes/go-mailer/mailserver"
+	"github.com/antonybholmes/go-sys/env"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 )
@@ -19,11 +21,19 @@ var rdb = redis.NewClient(&redis.Options{
 })
 
 func main() {
-	log.Debug().Msgf("go-edb-server-mailer %s", consts.REDIS_ADDR)
+	//env.Reload()
+	//env.Load("consts.env")
+	//env.Load("version.env")
+
+	env.Ls()
+
+	mailserver.Init()
+
+	log.Debug().Msgf("edb-server-mailer %s", consts.REDIS_ADDR)
 
 	subscriber := rdb.Subscribe(ctx, "email")
 
-	var email mailer.RedisQueueEmail
+	var qe mailer.RedisQueueEmail
 
 	for {
 		msg, err := subscriber.ReceiveMessage(ctx)
@@ -32,12 +42,19 @@ func main() {
 			panic(err)
 		}
 
-		err = json.Unmarshal([]byte(msg.Payload), &email)
+		err = json.Unmarshal([]byte(msg.Payload), &qe)
 
 		if err != nil {
 			log.Debug().Msgf("email error")
 		}
 
-		log.Debug().Msgf("email %v", email)
+		switch qe.EmailType {
+		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
+			go SendPasswordlessSigninEmail(&qe)
+		default:
+			log.Debug().Msgf("invalid email type: %s", qe.EmailType)
+		}
+
+		log.Debug().Msgf("email %v", qe)
 	}
 }
