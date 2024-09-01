@@ -31,7 +31,7 @@ func main() {
 
 	log.Debug().Msgf("edb-server-mailer %s", consts.REDIS_ADDR)
 
-	subscriber := rdb.Subscribe(ctx, "email")
+	subscriber := rdb.Subscribe(ctx, mailer.REDIS_EMAIL_CHANNEL)
 
 	var qe mailer.RedisQueueEmail
 
