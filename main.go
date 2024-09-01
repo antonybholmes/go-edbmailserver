@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
@@ -12,7 +13,7 @@ import (
 var ctx = context.Background()
 
 var rdb = redis.NewClient(&redis.Options{
-	Addr:     "localhost:6379",
+	Addr:     consts.REDIS_ADDR,
 	Password: "", // no password set
 	DB:       0,  // use default DB
 })
