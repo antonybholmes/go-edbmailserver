@@ -6,7 +6,6 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
-	"github.com/antonybholmes/go-mailer/mailserver"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
@@ -27,7 +26,7 @@ func main() {
 
 	env.Ls()
 
-	mailserver.Init()
+	//mailserver.Init()
 
 	log.Debug().Msgf("edb-server-mailer %s", consts.REDIS_ADDR)
 
