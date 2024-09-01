@@ -11,20 +11,21 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var ctx = context.Background()
-
-var rdb = redis.NewClient(&redis.Options{
-	Addr:     consts.REDIS_ADDR,
-	Password: "", // no password set
-	DB:       0,  // use default DB
-})
-
 func main() {
 	//env.Reload()
 	//env.Load("consts.env")
 	//env.Load("version.env")
 
 	env.Ls()
+
+	var ctx = context.Background()
+	log.Debug().Msgf("start rdb %s", consts.REDIS_ADDR)
+
+	var rdb = redis.NewClient(&redis.Options{
+		Addr:     consts.REDIS_ADDR,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
 
 	//mailserver.Init()
 
