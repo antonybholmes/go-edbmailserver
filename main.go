@@ -11,17 +11,22 @@ import (
 
 var ctx = context.Background()
 
-var redisClient = redis.NewClient(&redis.Options{
-	Addr: "localhost:6379",
+var rdb = redis.NewClient(&redis.Options{
+	Addr:     "localhost:6379",
+	Password: "", // no password set
+	DB:       0,  // use default DB
 })
 
 func main() {
-	subscriber := redisClient.Subscribe(ctx, "email")
+	log.Debug().Msgf("go-edb-server-mailer")
+
+	subscriber := rdb.Subscribe(ctx, "email")
 
 	var email mailer.RedisQueueEmail
 
 	for {
 		msg, err := subscriber.ReceiveMessage(ctx)
+
 		if err != nil {
 			panic(err)
 		}
@@ -31,5 +36,7 @@ func main() {
 		if err != nil {
 			log.Debug().Msgf("email error")
 		}
+
+		log.Debug().Msgf("email %v", email)
 	}
 }
