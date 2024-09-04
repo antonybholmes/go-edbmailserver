@@ -131,6 +131,17 @@ func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 	return nil
 }
 
+func SendAccountCreatedEmail(qe *mailer.RedisQueueEmail) error {
+
+	file := "templates/email/account/created.html"
+
+	go SendEmailWithToken("Account Created",
+		qe,
+		file)
+
+	return nil
+}
+
 func SendAccountUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/account/updated.html"
