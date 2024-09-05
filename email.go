@@ -9,6 +9,7 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
+	"github.com/rs/zerolog/log"
 
 	"github.com/antonybholmes/go-mailer/mailserver"
 )
@@ -34,6 +35,7 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/passwordless/api.html"
 	}
 
+	log.Debug().Msgf("cheese")
 	go SendEmailWithToken("Passwordless Sign In",
 		qe,
 		file)
@@ -230,6 +232,8 @@ func SendEmailWithToken(subject string,
 			return err
 		}
 	}
+
+	//log.Debug().Msgf("awhat %v", address)
 
 	err = mailserver.SendHtmlEmail(address, subject, body.String())
 

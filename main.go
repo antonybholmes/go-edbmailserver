@@ -48,6 +48,8 @@ func main() {
 			log.Debug().Msgf("email error")
 		}
 
+		log.Debug().Msgf("email this %s", msg.Payload)
+
 		switch qe.EmailType {
 		case mailer.REDIS_EMAIL_TYPE_VERIFY:
 			go SendVerifyEmail(&qe)
@@ -71,6 +73,5 @@ func main() {
 			log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 		}
 
-		log.Debug().Msgf("email %v", qe)
 	}
 }
