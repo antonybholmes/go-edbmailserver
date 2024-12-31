@@ -7,7 +7,7 @@ replace github.com/antonybholmes/go-mailer => ../go-mailer
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20241021142915-13ff92cbbcdc
+	github.com/antonybholmes/go-sys v0.0.0-20241219150701-64d5bd9623f7
 	github.com/rs/zerolog v1.33.0
 )
 
@@ -19,7 +19,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailer v0.0.0-20241007150543-6b1570c6da90
+	github.com/antonybholmes/go-mailer v0.0.0-20241204182257-78d1094d458e
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
