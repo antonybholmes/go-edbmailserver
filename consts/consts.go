@@ -17,6 +17,8 @@ var SESSION_NAME string
 var UPDATED string
 var REDIS_ADDR string
 
+//var URL_PASSWORDLESS_SIGN_IN string
+
 const DO_NOT_REPLY = "Please do not reply to this message. It was sent from a notification-only email address that we don't monitor."
 
 func init() {
@@ -31,6 +33,7 @@ func init() {
 	UPDATED = os.Getenv("UPDATED")
 	COPYRIGHT = os.Getenv("COPYRIGHT")
 	REDIS_ADDR = os.Getenv("REDIS_ADDR")
+	//URL_PASSWORDLESS_SIGN_IN = os.Getenv("URL_PASSWORDLESS_SIGN_IN")
 
 	//JWT_PRIVATE_KEY = []byte(os.Getenv("JWT_SECRET"))
 	//JWT_PUBLIC_KEY = []byte(os.Getenv("JWT_SECRET"))

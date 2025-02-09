@@ -14,7 +14,8 @@ import (
 )
 
 const JWT_PARAM = "jwt"
-const URL_PARAM = "url"
+
+//const REDIRECT_URL_PARAM = "redirectUrl"
 
 type EmailBody struct {
 	Name       string
@@ -28,7 +29,7 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.CallBackUrl != "" {
+	if qe.LinkUrl != "" {
 		file = "templates/email/passwordless/web.html"
 	} else {
 		file = "templates/email/passwordless/api.html"
@@ -45,7 +46,7 @@ func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.CallBackUrl != "" {
+	if qe.LinkUrl != "" {
 		file = "templates/email/verify/web.html"
 	} else {
 		file = "templates/email/verify/api.html"
@@ -73,7 +74,7 @@ func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.CallBackUrl != "" {
+	if qe.LinkUrl != "" {
 		file = "templates/email/password/reset/web.html"
 	} else {
 		file = "templates/email/password/reset/api.html"
@@ -90,7 +91,7 @@ func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.CallBackUrl != "" {
+	if qe.LinkUrl != "" {
 		file = "templates/email/password/switch-to-passwordless.html"
 	} else {
 		file = "templates/email/password/updated.html"
@@ -107,7 +108,7 @@ func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.CallBackUrl != "" {
+	if qe.LinkUrl != "" {
 		file = "templates/email/email/reset/web.html"
 	} else {
 		file = "templates/email/email/reset/api.html"
@@ -181,14 +182,14 @@ func SendEmailWithToken(subject string,
 
 	firstName = strings.Split(firstName, " ")[0]
 
-	if qe.CallBackUrl != "" {
-		callbackUrl, err := url.Parse(qe.CallBackUrl)
+	if qe.LinkUrl != "" {
+		linkUrl, err := url.Parse(qe.LinkUrl)
 
 		if err != nil {
 			return err
 		}
 
-		params, err := url.ParseQuery(callbackUrl.RawQuery)
+		params, err := url.ParseQuery(linkUrl.RawQuery)
 
 		if err != nil {
 			return err
@@ -200,9 +201,9 @@ func SendEmailWithToken(subject string,
 		// this feature is mostly unused since the visit url
 		// is normally encoded in the attached jwt to prevent
 		// tampering
-		if qe.VisitUrl != "" {
-			params.Set(URL_PARAM, qe.VisitUrl)
-		}
+		//if qe.RedirectUrl != "" {
+		//	params.Set(REDIRECT_URL_PARAM, qe.RedirectUrl)
+		//}
 
 		if qe.Token != "" {
 			params.Set(JWT_PARAM, qe.Token)
@@ -210,10 +211,10 @@ func SendEmailWithToken(subject string,
 
 		// once we've added extra params, update the
 		// raw query again
-		callbackUrl.RawQuery = params.Encode()
+		linkUrl.RawQuery = params.Encode()
 
 		// the complete url with params
-		link := callbackUrl.String()
+		link := linkUrl.String()
 
 		err = t.Execute(&body, EmailBody{
 			Name:       firstName,
@@ -240,7 +241,7 @@ func SendEmailWithToken(subject string,
 		}
 	}
 
-	//log.Debug().Msgf("awhat %v", address)
+	//log.Debug().Msgf("awhat %v", body.String())
 
 	err = mailserver.SendHtmlEmail(address, subject, body.String())
 
