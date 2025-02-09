@@ -9,7 +9,6 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
-	"github.com/rs/zerolog/log"
 
 	"github.com/antonybholmes/go-mailer/mailserver"
 )
@@ -35,7 +34,6 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/passwordless/api.html"
 	}
 
-	log.Debug().Msgf("cheese")
 	go SendEmailWithToken("Passwordless Sign In",
 		qe,
 		file)
@@ -196,6 +194,12 @@ func SendEmailWithToken(subject string,
 			return err
 		}
 
+		// after the callback url does some validation, we can
+		// goto a different url to make the user experience
+		// better
+		// this feature is mostly unused since the visit url
+		// is normally encoded in the attached jwt to prevent
+		// tampering
 		if qe.VisitUrl != "" {
 			params.Set(URL_PARAM, qe.VisitUrl)
 		}
@@ -204,8 +208,11 @@ func SendEmailWithToken(subject string,
 			params.Set(JWT_PARAM, qe.Token)
 		}
 
+		// once we've added extra params, update the
+		// raw query again
 		callbackUrl.RawQuery = params.Encode()
 
+		// the complete url with params
 		link := callbackUrl.String()
 
 		err = t.Execute(&body, EmailBody{
