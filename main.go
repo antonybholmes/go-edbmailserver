@@ -3,13 +3,22 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"net/mail"
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
+	"github.com/antonybholmes/go-mailer/sesmailserver"
+	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 )
+
+func init() {
+	from := sys.Must(mail.ParseAddress(env.GetStr("FROM", "")))
+
+	sesmailserver.Init(from)
+}
 
 func main() {
 	//env.Reload()
@@ -57,10 +66,8 @@ func main() {
 		case mailer.REDIS_EMAIL_TYPE_VERIFIED:
 			go SendVerifiedEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
-			err := SendPasswordlessSigninEmail(&qe)
-			if err != nil {
-				log.Debug().Msgf("%s", err)
-			}
+			go SendPasswordlessSigninEmail(&qe)
+
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_RESET:
 			go SendPasswordResetEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_UPDATED:

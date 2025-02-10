@@ -9,9 +9,9 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
-	"github.com/rs/zerolog/log"
-
-	"github.com/antonybholmes/go-mailer/mailserver"
+	"github.com/antonybholmes/go-mailer/sesmailserver"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const JWT_PARAM = "jwt"
@@ -28,20 +28,20 @@ type EmailBody struct {
 
 func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 
-	var file string
+	// var file string
 
-	if qe.LinkUrl != "" {
-		file = "templates/email/passwordless/web.html"
-	} else {
-		file = "templates/email/passwordless/api.html"
-	}
+	// if qe.LinkUrl != "" {
+	// 	file = "templates/email/passwordless/web.html"
+	// } else {
+	// 	file = "templates/email/passwordless/api.html"
+	// }
 
-	err := SendEmailWithToken("Passwordless Sign In",
+	file := "templates/email/passwordless/web.html"
+
+	return SendEmailWithToken("Passwordless Sign In",
 		qe,
 		consts.URL_SIGN_IN,
 		file)
-
-	return err
 }
 
 func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
@@ -54,24 +54,20 @@ func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/verify/api.html"
 	}
 
-	SendEmailWithToken("Email Address Verification",
+	return SendEmailWithToken("Email Address Verification",
 		qe,
 		qe.LinkUrl,
 		file)
-
-	return nil
 }
 
 func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/verify/verified.html"
 
-	SendEmailWithToken("Email Address Verified",
+	return SendEmailWithToken("Email Address Verified",
 		qe,
 		qe.LinkUrl,
 		file)
-
-	return nil
 }
 
 func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
@@ -88,7 +84,6 @@ func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
 		qe,
 		qe.LinkUrl,
 		file)
-
 }
 
 func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
@@ -105,7 +100,6 @@ func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 		qe,
 		qe.LinkUrl,
 		file)
-
 }
 
 func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
@@ -122,7 +116,6 @@ func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
 		qe,
 		qe.LinkUrl,
 		file)
-
 }
 
 func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
@@ -133,7 +126,6 @@ func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 		qe,
 		qe.LinkUrl,
 		file)
-
 }
 
 func SendAccountCreatedEmail(qe *mailer.RedisQueueEmail) error {
@@ -181,6 +173,8 @@ func SendEmailWithToken(subject string,
 		firstName = qe.Name
 	} else {
 		firstName = strings.Split(address.Address, "@")[0]
+		c := cases.Title(language.English)
+		firstName = c.String(firstName)
 	}
 
 	firstName = strings.Split(firstName, " ")[0]
@@ -227,8 +221,6 @@ func SendEmailWithToken(subject string,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
 
-		log.Debug().Msgf("here 2 %s", err)
-
 		if err != nil {
 			return err
 		}
@@ -246,11 +238,9 @@ func SendEmailWithToken(subject string,
 		}
 	}
 
-	log.Debug().Msgf("awhat %v %v %v", address, subject, body.String())
+	//log.Debug().Msgf("email %v %v %v", address, subject, body.String())
 
-	err = mailserver.SendHtmlEmail(address, subject, "Nothing nothing")
-
-	log.Debug().Msgf("cake %s", err)
+	err = sesmailserver.SendHtmlEmail(address, subject, body.String())
 
 	if err != nil {
 		return err
