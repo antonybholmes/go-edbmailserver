@@ -9,6 +9,7 @@ import (
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
+	"github.com/rs/zerolog/log"
 
 	"github.com/antonybholmes/go-mailer/mailserver"
 )
@@ -35,11 +36,12 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/passwordless/api.html"
 	}
 
-	go SendEmailWithToken("Passwordless Sign In",
+	err := SendEmailWithToken("Passwordless Sign In",
 		qe,
+		consts.URL_SIGN_IN,
 		file)
 
-	return nil
+	return err
 }
 
 func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
@@ -52,8 +54,9 @@ func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/verify/api.html"
 	}
 
-	go SendEmailWithToken("Email Address Verification",
+	SendEmailWithToken("Email Address Verification",
 		qe,
+		qe.LinkUrl,
 		file)
 
 	return nil
@@ -63,8 +66,9 @@ func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/verify/verified.html"
 
-	go SendEmailWithToken("Email Address Verified",
+	SendEmailWithToken("Email Address Verified",
 		qe,
+		qe.LinkUrl,
 		file)
 
 	return nil
@@ -80,11 +84,11 @@ func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/password/reset/api.html"
 	}
 
-	go SendEmailWithToken("Password Reset",
+	return SendEmailWithToken("Password Reset",
 		qe,
+		qe.LinkUrl,
 		file)
 
-	return nil
 }
 
 func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
@@ -97,11 +101,11 @@ func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/password/updated.html"
 	}
 
-	go SendEmailWithToken("Password Updated",
+	return SendEmailWithToken("Password Updated",
 		qe,
+		qe.LinkUrl,
 		file)
 
-	return nil
 }
 
 func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
@@ -114,48 +118,47 @@ func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
 		file = "templates/email/email/reset/api.html"
 	}
 
-	go SendEmailWithToken("Email Reset",
+	return SendEmailWithToken("Email Reset",
 		qe,
+		qe.LinkUrl,
 		file)
 
-	return nil
 }
 
 func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/email/updated.html"
 
-	go SendEmailWithToken("Email Updated",
+	return SendEmailWithToken("Email Updated",
 		qe,
+		qe.LinkUrl,
 		file)
 
-	return nil
 }
 
 func SendAccountCreatedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/account/created.html"
 
-	go SendEmailWithToken("Account Created",
+	return SendEmailWithToken("Account Created",
 		qe,
+		qe.LinkUrl,
 		file)
-
-	return nil
 }
 
 func SendAccountUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 
 	file := "templates/email/account/updated.html"
 
-	go SendEmailWithToken("Account Updated",
+	return SendEmailWithToken("Account Updated",
 		qe,
+		qe.LinkUrl,
 		file)
-
-	return nil
 }
 
 func SendEmailWithToken(subject string,
 	qe *mailer.RedisQueueEmail,
+	linkUrl string,
 	file string) error {
 
 	address, err := mail.ParseAddress(qe.To)
@@ -182,14 +185,14 @@ func SendEmailWithToken(subject string,
 
 	firstName = strings.Split(firstName, " ")[0]
 
-	if qe.LinkUrl != "" {
-		linkUrl, err := url.Parse(qe.LinkUrl)
+	if linkUrl != "" {
+		_linkUrl, err := url.Parse(linkUrl)
 
 		if err != nil {
 			return err
 		}
 
-		params, err := url.ParseQuery(linkUrl.RawQuery)
+		params, err := url.ParseQuery(_linkUrl.RawQuery)
 
 		if err != nil {
 			return err
@@ -211,10 +214,10 @@ func SendEmailWithToken(subject string,
 
 		// once we've added extra params, update the
 		// raw query again
-		linkUrl.RawQuery = params.Encode()
+		_linkUrl.RawQuery = params.Encode()
 
 		// the complete url with params
-		link := linkUrl.String()
+		link := _linkUrl.String()
 
 		err = t.Execute(&body, EmailBody{
 			Name:       firstName,
@@ -223,6 +226,8 @@ func SendEmailWithToken(subject string,
 			Time:       qe.Ttl,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
+
+		log.Debug().Msgf("here 2 %s", err)
 
 		if err != nil {
 			return err
@@ -241,9 +246,11 @@ func SendEmailWithToken(subject string,
 		}
 	}
 
-	//log.Debug().Msgf("awhat %v", body.String())
+	log.Debug().Msgf("awhat %v %v %v", address, subject, body.String())
 
-	err = mailserver.SendHtmlEmail(address, subject, body.String())
+	err = mailserver.SendHtmlEmail(address, subject, "Nothing nothing")
+
+	log.Debug().Msgf("cake %s", err)
 
 	if err != nil {
 		return err

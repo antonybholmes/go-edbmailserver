@@ -19,17 +19,18 @@ func main() {
 	env.Ls()
 
 	var ctx = context.Background()
-	log.Debug().Msgf("start rdb %s", consts.REDIS_ADDR)
+	log.Debug().Msgf("start rdb %s", consts.REDIS_PASSWORD)
 
 	var rdb = redis.NewClient(&redis.Options{
 		Addr:     consts.REDIS_ADDR,
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Username: "edb",
+		Password: consts.REDIS_PASSWORD, // no password set
+		DB:       0,                     // use default DB
 	})
 
 	//mailserver.Init()
 
-	log.Debug().Msgf("edb-server-mailer %s", consts.REDIS_ADDR)
+	log.Debug().Msgf("%s %s", consts.APP_NAME, consts.REDIS_ADDR)
 
 	subscriber := rdb.Subscribe(ctx, mailer.REDIS_EMAIL_CHANNEL)
 
@@ -48,15 +49,18 @@ func main() {
 			log.Debug().Msgf("email error")
 		}
 
-		log.Debug().Msgf("email this %s", msg.Payload)
+		log.Debug().Msgf("email this %s %v", msg.Payload, qe.EmailType)
 
 		switch qe.EmailType {
 		case mailer.REDIS_EMAIL_TYPE_VERIFY:
-			go SendVerifyEmail(&qe)
+			SendVerifyEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_VERIFIED:
 			go SendVerifiedEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
-			go SendPasswordlessSigninEmail(&qe)
+			err := SendPasswordlessSigninEmail(&qe)
+			if err != nil {
+				log.Debug().Msgf("%s", err)
+			}
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_RESET:
 			go SendPasswordResetEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_UPDATED:

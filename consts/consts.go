@@ -16,6 +16,9 @@ var SESSION_SECRET string
 var SESSION_NAME string
 var UPDATED string
 var REDIS_ADDR string
+var REDIS_PASSWORD string
+
+var URL_SIGN_IN string
 
 //var URL_PASSWORDLESS_SIGN_IN string
 
@@ -32,7 +35,12 @@ func init() {
 	VERSION = os.Getenv("VERSION")
 	UPDATED = os.Getenv("UPDATED")
 	COPYRIGHT = os.Getenv("COPYRIGHT")
+
 	REDIS_ADDR = os.Getenv("REDIS_ADDR")
+	REDIS_PASSWORD = os.Getenv("REDIS_PASSWORD")
+
+	URL_SIGN_IN = os.Getenv("URL_SIGN_IN")
+
 	//URL_PASSWORDLESS_SIGN_IN = os.Getenv("URL_PASSWORDLESS_SIGN_IN")
 
 	//JWT_PRIVATE_KEY = []byte(os.Getenv("JWT_SECRET"))
