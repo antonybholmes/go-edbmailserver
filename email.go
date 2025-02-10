@@ -28,15 +28,15 @@ type EmailBody struct {
 
 func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 
-	// var file string
+	var file string
 
-	// if qe.LinkUrl != "" {
-	// 	file = "templates/email/passwordless/web.html"
-	// } else {
-	// 	file = "templates/email/passwordless/api.html"
-	// }
+	if qe.Mode != "api" {
+		file = "templates/email/passwordless/api.html"
+	} else {
+		file = "templates/email/passwordless/web.html"
+	}
 
-	file := "templates/email/passwordless/web.html"
+	//file := "templates/email/passwordless/web.html"
 
 	return SendEmailWithToken("Passwordless Sign In",
 		qe,

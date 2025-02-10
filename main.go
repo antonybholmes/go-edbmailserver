@@ -67,7 +67,6 @@ func main() {
 			go SendVerifiedEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
 			go SendPasswordlessSigninEmail(&qe)
-
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_RESET:
 			go SendPasswordResetEmail(&qe)
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_UPDATED:
