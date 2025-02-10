@@ -9,6 +9,7 @@ replace github.com/antonybholmes/go-sys => ../go-sys
 require (
 	github.com/antonybholmes/go-sys v0.0.0-20250205171520-3b66c82ca1f3
 	github.com/rs/zerolog v1.33.0
+	golang.org/x/text v0.22.0
 )
 
 require (
@@ -39,7 +40,6 @@ require (
 	github.com/xuri/nfp v0.0.0-20250111060730-82a408b9aa71 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
 )
 
 require (
