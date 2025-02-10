@@ -30,7 +30,7 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.Mode != "api" {
+	if qe.Mode == "api" {
 		file = "templates/email/passwordless/api.html"
 	} else {
 		file = "templates/email/passwordless/web.html"
@@ -48,15 +48,15 @@ func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
 
 	var file string
 
-	if qe.LinkUrl != "" {
-		file = "templates/email/verify/web.html"
-	} else {
+	if qe.Mode == "api" {
 		file = "templates/email/verify/api.html"
+	} else {
+		file = "templates/email/verify/web.html"
 	}
 
 	return SendEmailWithToken("Email Address Verification",
 		qe,
-		qe.LinkUrl,
+		consts.URL_VERIFY_EMAIL,
 		file)
 }
 
@@ -66,7 +66,7 @@ func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
 
 	return SendEmailWithToken("Email Address Verified",
 		qe,
-		qe.LinkUrl,
+		"",
 		file)
 }
 
