@@ -6,9 +6,9 @@ import (
 	"github.com/antonybholmes/go-sys/env"
 )
 
-var NAME string
-var APP_NAME string
-var APP_URL string
+const NAME = "Experiments Mail Server"
+const APP_NAME = "edb-server-mailer"
+
 var VERSION string
 var COPYRIGHT string
 
@@ -30,9 +30,6 @@ func init() {
 	env.Load("consts.env")
 	env.Load("version.env")
 
-	NAME = os.Getenv("NAME")
-	APP_NAME = os.Getenv("APP_NAME")
-	APP_URL = os.Getenv("APP_URL")
 	VERSION = os.Getenv("VERSION")
 	UPDATED = os.Getenv("UPDATED")
 	COPYRIGHT = os.Getenv("COPYRIGHT")
