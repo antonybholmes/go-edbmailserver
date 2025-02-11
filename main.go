@@ -10,6 +10,7 @@ import (
 	"github.com/antonybholmes/go-mailer/sesmailserver"
 	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
+	"github.com/panjf2000/ants"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 )
@@ -37,7 +38,8 @@ func main() {
 		DB:       0,                     // use default DB
 	})
 
-	//mailserver.Init()
+	// make a thread pool
+	pool := sys.Must(ants.NewPool(10))
 
 	log.Debug().Msgf("%s %s", consts.APP_NAME, consts.REDIS_ADDR)
 
@@ -58,27 +60,27 @@ func main() {
 			log.Debug().Msgf("email error")
 		}
 
-		log.Debug().Msgf("email this %s %v", msg.Payload, qe.EmailType)
+		//log.Debug().Msgf("email %s %v", msg.Payload, qe.EmailType)
 
 		switch qe.EmailType {
 		case mailer.REDIS_EMAIL_TYPE_VERIFY:
-			SendVerifyEmail(&qe)
+			pool.Submit(func() { SendVerifyEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_VERIFIED:
-			go SendVerifiedEmail(&qe)
+			pool.Submit(func() { SendVerifiedEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_PASSWORDLESS:
-			go SendPasswordlessSigninEmail(&qe)
+			pool.Submit(func() { SendPasswordlessSigninEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_RESET:
-			go SendPasswordResetEmail(&qe)
+			pool.Submit(func() { SendPasswordResetEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_PASSWORD_UPDATED:
-			go SendPasswordUpdatedEmail(&qe)
+			pool.Submit(func() { SendPasswordUpdatedEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_EMAIL_RESET:
-			go SendEmailResetEmail(&qe)
+			pool.Submit(func() { SendEmailResetEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_EMAIL_UPDATED:
-			go SendEmailUpdatedEmail(&qe)
+			pool.Submit(func() { SendEmailUpdatedEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_ACCOUNT_CREATED:
-			go SendAccountCreatedEmail(&qe)
+			pool.Submit(func() { SendAccountCreatedEmail(&qe) })
 		case mailer.REDIS_EMAIL_TYPE_ACCOUNT_UPDATED:
-			go SendAccountUpdatedEmail(&qe)
+			pool.Submit(func() { SendAccountUpdatedEmail(&qe) })
 		default:
 			log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 		}
