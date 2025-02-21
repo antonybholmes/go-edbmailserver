@@ -25,7 +25,7 @@ func main() {
 	// make a thread pool
 	pool := sys.Must(ants.NewPool(10))
 
-	//ConsumeRedis(pool)
+	ConsumeRedis(pool)
 
-	ConsumeKafka(pool)
+	//ConsumeKafka(pool)
 }
