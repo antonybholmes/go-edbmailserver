@@ -26,7 +26,7 @@ type EmailBody struct {
 	DoNotReply string
 }
 
-func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
+func SendPasswordlessSigninEmail(qe *mailer.QueueEmail) error {
 
 	var file string
 
@@ -44,7 +44,7 @@ func SendPasswordlessSigninEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
+func SendVerifyEmail(qe *mailer.QueueEmail) error {
 
 	var file string
 
@@ -60,7 +60,7 @@ func SendVerifyEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
+func SendVerifiedEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/verify/verified.html"
 
@@ -70,7 +70,7 @@ func SendVerifiedEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
+func SendPasswordResetEmail(qe *mailer.QueueEmail) error {
 
 	var file string
 
@@ -86,7 +86,7 @@ func SendPasswordResetEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+func SendPasswordUpdatedEmail(qe *mailer.QueueEmail) error {
 
 	var file string
 
@@ -102,7 +102,7 @@ func SendPasswordUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
+func SendEmailResetEmail(qe *mailer.QueueEmail) error {
 
 	var file string
 
@@ -118,7 +118,7 @@ func SendEmailResetEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+func SendEmailUpdatedEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/email/updated.html"
 
@@ -128,7 +128,7 @@ func SendEmailUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendAccountCreatedEmail(qe *mailer.RedisQueueEmail) error {
+func SendAccountCreatedEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/account/created.html"
 
@@ -138,7 +138,7 @@ func SendAccountCreatedEmail(qe *mailer.RedisQueueEmail) error {
 		file)
 }
 
-func SendAccountUpdatedEmail(qe *mailer.RedisQueueEmail) error {
+func SendAccountUpdatedEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/account/updated.html"
 
@@ -149,7 +149,7 @@ func SendAccountUpdatedEmail(qe *mailer.RedisQueueEmail) error {
 }
 
 func SendEmailWithToken(subject string,
-	qe *mailer.RedisQueueEmail,
+	qe *mailer.QueueEmail,
 	linkUrl string,
 	file string) error {
 

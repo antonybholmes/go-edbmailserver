@@ -10,6 +10,7 @@ require (
 	github.com/antonybholmes/go-sys v0.0.0-20250213145427-162471c206ff
 	github.com/panjf2000/ants v1.3.0
 	github.com/rs/zerolog v1.33.0
+	github.com/segmentio/kafka-go v0.4.47
 	golang.org/x/text v0.22.0
 )
 
@@ -31,7 +32,9 @@ require (
 	github.com/aws/smithy-go v1.22.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
+	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.4 // indirect
 	github.com/xuri/efp v0.0.0-20241211021726-c4e992084aa6 // indirect
@@ -46,6 +49,6 @@ require (
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/redis/go-redis/v9 v9.7.0
+	github.com/redis/go-redis/v9 v9.7.1
 	golang.org/x/sys v0.30.0 // indirect
 )
