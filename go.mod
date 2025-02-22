@@ -2,6 +2,8 @@ module github.com/antonybholmes/go-edb-server-mailer
 
 go 1.24
 
+toolchain go1.24.0
+
 replace github.com/antonybholmes/go-mailer => ../go-mailer
 
 replace github.com/antonybholmes/go-sys => ../go-sys
