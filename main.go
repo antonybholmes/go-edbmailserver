@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/mail"
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
@@ -14,7 +13,6 @@ import (
 	"github.com/panjf2000/ants"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
-	"github.com/segmentio/kafka-go"
 )
 
 func init() {
@@ -34,7 +32,7 @@ func main() {
 	pool := sys.Must(ants.NewPool(10))
 
 	consumeRedis(pool)
-	//ConsumeKafka(pool)
+	//consumeKafka(pool)
 }
 
 func consumeRedis(pool *ants.Pool) {
@@ -78,46 +76,40 @@ func consumeRedis(pool *ants.Pool) {
 	}
 }
 
-func consumeKafka(pool *ants.Pool) {
-	//env.Reload()
-	//env.Load("consts.env")
-	//env.Load("version.env")
+// func consumeKafka(pool *ants.Pool) {
 
-	var ctx = context.Background()
+// 	var ctx = context.Background()
 
-	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{"localhost:9094"}, // Kafka broker
-		Topic:     mailer.QUEUE_EMAIL_CHANNEL, // Topic name
-		Partition: 0,
-		MaxBytes:  10e6, // 10MB
-	})
+// 	r := kafka.NewReader(kafka.ReaderConfig{
+// 		Brokers:   []string{"localhost:9094"}, // Kafka broker
+// 		Topic:     mailer.QUEUE_EMAIL_CHANNEL, // Topic name
+// 		Partition: 0,
+// 		MaxBytes:  10e6, // 10MB
+// 	})
 
-	defer r.Close()
+// 	defer r.Close()
 
-	var qe mailer.QueueEmail
+// 	var qe mailer.QueueEmail
 
-	for {
-		m, err := r.ReadMessage(ctx)
+// 	for {
+// 		m, err := r.ReadMessage(ctx)
 
-		if err != nil {
-			fmt.Printf("%s", err)
-			break
-		}
+// 		if err != nil {
+// 			fmt.Printf("%s", err)
+// 			break
+// 		}
 
-		fmt.Printf("message at offset %d: %s = %s\n", m.Offset, string(m.Key), string(m.Value))
+// 		fmt.Printf("message at offset %d: %s = %s\n", m.Offset, string(m.Key), string(m.Value))
 
-		err = json.Unmarshal([]byte(m.Value), &qe)
+// 		err = json.Unmarshal([]byte(m.Value), &qe)
 
-		if err != nil {
-			log.Debug().Msgf("email error")
-		}
+// 		if err != nil {
+// 			log.Debug().Msgf("email error")
+// 		}
 
-		//log.Debug().Msgf("email %s %v", msg.Payload, qe.EmailType)
-
-		sendEmail(&qe, pool)
-	}
-
-}
+// 		sendEmail(&qe, pool)
+// 	}
+// }
 
 func sendEmail(qe *mailer.QueueEmail, pool *ants.Pool) {
 

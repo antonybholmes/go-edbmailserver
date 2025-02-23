@@ -12,7 +12,6 @@ require (
 	github.com/antonybholmes/go-sys v0.0.0-20250213145427-162471c206ff
 	github.com/panjf2000/ants v1.3.0
 	github.com/rs/zerolog v1.33.0
-	github.com/segmentio/kafka-go v0.4.47
 	golang.org/x/text v0.22.0
 )
 
@@ -39,6 +38,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.4 // indirect
+	github.com/segmentio/kafka-go v0.4.47 // indirect
 	github.com/xuri/efp v0.0.0-20241211021726-c4e992084aa6 // indirect
 	github.com/xuri/excelize/v2 v2.9.0 // indirect
 	github.com/xuri/nfp v0.0.0-20250111060730-82a408b9aa71 // indirect
