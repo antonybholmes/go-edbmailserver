@@ -49,7 +49,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailer v0.0.0-20250303144057-3b4a79366f5c
+	github.com/antonybholmes/go-mailer v0.0.0-20250307171537-40cb719132aa
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
