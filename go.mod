@@ -12,7 +12,7 @@ require (
 	github.com/antonybholmes/go-sys v0.0.0-20250326211431-bdf1f86a7b8b
 	github.com/panjf2000/ants v1.3.0
 	github.com/rs/zerolog v1.34.0
-	golang.org/x/text v0.23.0
+	golang.org/x/text v0.24.0
 )
 
 require (
@@ -44,7 +44,7 @@ require (
 	github.com/xuri/efp v0.0.0-20250227110027-3491fafc2b79 // indirect
 	github.com/xuri/excelize/v2 v2.9.0 // indirect
 	github.com/xuri/nfp v0.0.0-20250226145837-86d5fc24b2ba // indirect
-	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 )
 
