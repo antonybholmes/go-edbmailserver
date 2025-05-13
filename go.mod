@@ -9,7 +9,7 @@ replace github.com/antonybholmes/go-mailer => ../go-mailer
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20250507224210-db245e1b7761
+	github.com/antonybholmes/go-sys v0.0.0-20250512211932-464c953347d7
 	github.com/panjf2000/ants v1.3.0
 	github.com/rs/zerolog v1.34.0
 	golang.org/x/text v0.25.0
