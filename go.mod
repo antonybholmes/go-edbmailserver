@@ -1,15 +1,13 @@
 module github.com/antonybholmes/go-edb-server-mailer
 
-go 1.24
-
-toolchain go1.24.0
+go 1.25
 
 replace github.com/antonybholmes/go-mailer => ../go-mailer
 
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20250711230729-977770033804
+	github.com/antonybholmes/go-sys v0.0.0-20250812213435-bed670f8992a
 	github.com/panjf2000/ants v1.3.0
 	github.com/rs/zerolog v1.34.0
 	golang.org/x/text v0.28.0
@@ -49,7 +47,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailer v0.0.0-20250731210106-f78dce83834e
+	github.com/antonybholmes/go-mailer v0.0.0-20250812213425-21273ad7d6a8
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
