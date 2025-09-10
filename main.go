@@ -67,29 +67,33 @@ func main() {
 // 	}
 // }
 
-func sendEmail(qe *mailer.QueueEmail, pool *ants.Pool) {
+func sendEmailUsingPool(qe *mailer.QueueEmail, pool *ants.Pool) {
+	pool.Submit(func() { sendEmail(qe) })
+}
+
+func sendEmail(qe *mailer.QueueEmail) {
 
 	switch qe.EmailType {
 	case mailer.QUEUE_EMAIL_TYPE_VERIFY:
-		pool.Submit(func() { SendVerifyEmail(qe) })
+		SendVerifyEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_VERIFIED:
-		pool.Submit(func() { SendVerifiedEmail(qe) })
+		SendVerifiedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_PASSWORDLESS:
-		pool.Submit(func() { SendPasswordlessSigninEmail(qe) })
+		SendPasswordlessSigninEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
-		pool.Submit(func() { SendPasswordResetEmail(qe) })
+		SendPasswordResetEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
-		pool.Submit(func() { SendPasswordUpdatedEmail(qe) })
+		SendPasswordUpdatedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_EMAIL_RESET:
-		pool.Submit(func() { SendEmailResetEmail(qe) })
+		SendEmailResetEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
-		pool.Submit(func() { SendEmailUpdatedEmail(qe) })
+		SendEmailUpdatedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
-		pool.Submit(func() { SendAccountCreatedEmail(qe) })
+		SendAccountCreatedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
-		pool.Submit(func() { SendAccountUpdatedEmail(qe) })
+		SendAccountUpdatedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_TOTP:
-		pool.Submit(func() { SendTOTPEmail(qe) })
+		SendTOTPEmail(qe)
 	default:
 		log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 	}

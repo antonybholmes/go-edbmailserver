@@ -48,6 +48,6 @@ func ConsumeRedis(pool *ants.Pool) {
 
 		//log.Debug().Msgf("email %s %v", msg.Payload, qe.EmailType)
 
-		sendEmail(&qe, pool)
+		sendEmailUsingPool(&qe, pool)
 	}
 }

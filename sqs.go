@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
@@ -13,6 +12,10 @@ import (
 	"github.com/panjf2000/ants"
 	"github.com/rs/zerolog/log"
 )
+
+const MAX_MESSAGES = 5
+const WAIT_TIME_SECONDS = 10
+const SLEEP_DURATION_SECONDS = 5 * time.Second
 
 func ConsumeSQS(pool *ants.Pool) {
 
@@ -30,13 +33,13 @@ func ConsumeSQS(pool *ants.Pool) {
 	for {
 		resp, err := client.ReceiveMessage(ctx, &sqs.ReceiveMessageInput{
 			QueueUrl:            consts.SQS_QUEUE_URL,
-			MaxNumberOfMessages: 5,
-			WaitTimeSeconds:     10, // long polling
+			MaxNumberOfMessages: MAX_MESSAGES,
+			WaitTimeSeconds:     WAIT_TIME_SECONDS,
 		})
 
 		if err != nil {
 			log.Printf("Failed to receive messages: %v", err)
-			time.Sleep(5 * time.Second)
+			time.Sleep(SLEEP_DURATION_SECONDS)
 			continue
 		}
 
@@ -57,11 +60,12 @@ func ConsumeSQS(pool *ants.Pool) {
 				log.Debug().Msgf("Failed to delete message: %v", err)
 			}
 
-			fmt.Println("Message deleted successfully")
+			log.Debug().Msgf("Message %s deleted successfully\n", *message.ReceiptHandle)
 
-			log.Debug().Msgf("email %v %v", message.Body, qe.EmailType)
+			//log.Debug().Msgf("email %v %v", message.Body, qe.EmailType)
 
-			sendEmail(&qe, pool)
+			//sendEmailUsingPool(&qe, pool)
+			sendEmail(&qe)
 		}
 	}
 }

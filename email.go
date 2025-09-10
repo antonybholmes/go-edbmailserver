@@ -10,7 +10,6 @@ import (
 	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
 	"github.com/antonybholmes/go-mailer/sesmailserver"
-	"github.com/rs/zerolog/log"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -153,19 +152,18 @@ func SendTOTPEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/otp/totp.html"
 
-	log.Debug().Msgf("send totp email to %s", qe.To)
+	//log.Debug().Msgf("send totp email to %s", qe.To)
 
 	err := SendEmailWithToken("TOTP Code",
 		qe,
 		"",
 		file)
 
-	if err != nil {
-		log.Debug().Msgf("error sending totp email to %s: %v", qe.To, err)
-		return err
-	}
+	// if err != nil {
+	// 	log.Debug().Msgf("error sending totp email to %s: %v", qe.To, err)
+	// }
 
-	return nil
+	return err
 }
 
 func SendEmailWithToken(subject string,
