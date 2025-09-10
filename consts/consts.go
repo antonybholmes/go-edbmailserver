@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/antonybholmes/go-sys/env"
+	"github.com/aws/aws-sdk-go-v2/aws"
 )
 
 const NAME = "Experiments Mail Server"
@@ -20,6 +21,7 @@ var REDIS_PASSWORD string
 
 var URL_SIGN_IN string
 var URL_VERIFY_EMAIL string
+var SQS_QUEUE_URL *string
 
 //var URL_PASSWORDLESS_SIGN_IN string
 
@@ -37,6 +39,8 @@ func init() {
 
 	REDIS_ADDR = os.Getenv("REDIS_ADDR")
 	REDIS_PASSWORD = os.Getenv("REDIS_PASSWORD")
+
+	SQS_QUEUE_URL = aws.String(os.Getenv("SQS_QUEUE_URL"))
 
 	URL_SIGN_IN = os.Getenv("URL_SIGN_IN")
 
