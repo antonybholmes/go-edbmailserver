@@ -1,1 +1,1 @@
-# go-edb-server-mailer
+# edb-mail-server

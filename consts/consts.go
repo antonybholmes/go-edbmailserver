@@ -8,7 +8,7 @@ import (
 )
 
 const NAME = "Experiments Mail Server"
-const APP_NAME = "edb-server-mailer"
+const APP_NAME = "edb-mail-server"
 
 var VERSION string
 var COPYRIGHT string

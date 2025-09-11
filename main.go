@@ -1,17 +1,50 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"net/mail"
+	"os"
 
+	"github.com/antonybholmes/go-edb-server-mailer/consts"
 	"github.com/antonybholmes/go-mailer"
 	"github.com/antonybholmes/go-mailer/sesmailserver"
 	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/panjf2000/ants"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+func initLogger() {
+	fileLogger := &lumberjack.Logger{
+		Filename:   fmt.Sprintf("logs/%s.log", consts.APP_NAME),
+		MaxSize:    10,   // Max size in MB before rotating
+		MaxBackups: 3,    // Keep 3 backup files
+		MaxAge:     7,    // Retain files for 7 days
+		Compress:   true, // Compress old log files
+	}
+
+	multiWriter := io.MultiWriter(os.Stderr, fileLogger)
+
+	logger := zerolog.New(multiWriter).With().Timestamp().Logger()
+
+	// we use != development because it means we need to set the env variable in order
+	// to see debugging work. The default is to assume production, in which case we use
+	// lumberjack
+	if os.Getenv("APP_ENV") != "development" {
+		logger = zerolog.New(io.MultiWriter(zerolog.ConsoleWriter{Out: os.Stderr}, fileLogger)).With().Timestamp().Logger()
+	}
+
+	log.Logger = logger
+}
+
 func init() {
+	env.Ls()
+
+	initLogger()
+
 	from := sys.Must(mail.ParseAddress(env.GetStr("FROM", "")))
 
 	sesmailserver.Init(from)
@@ -21,8 +54,6 @@ func main() {
 	//env.Reload()
 	//env.Load("consts.env")
 	//env.Load("version.env")
-
-	env.Ls()
 
 	// make a thread pool
 	pool := sys.Must(ants.NewPool(10))
