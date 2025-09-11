@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/antonybholmes/go-edb-server-mailer/consts"
-	"github.com/antonybholmes/go-mailer"
+	"github.com/antonybholmes/go-edb-mail-server/consts"
+	mailserver "github.com/antonybholmes/go_mailserver"
 	"github.com/panjf2000/ants"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
@@ -29,9 +29,9 @@ func ConsumeRedis(pool *ants.Pool) {
 
 	log.Debug().Msgf("%s %s", consts.APP_NAME, consts.REDIS_ADDR)
 
-	subscriber := rdb.Subscribe(ctx, mailer.QUEUE_EMAIL_CHANNEL)
+	subscriber := rdb.Subscribe(ctx, mailserver.QUEUE_EMAIL_CHANNEL)
 
-	var qe mailer.QueueEmail
+	var qe mailserver.QueueEmail
 
 	for {
 		msg, err := subscriber.ReceiveMessage(ctx)

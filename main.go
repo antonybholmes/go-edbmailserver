@@ -6,9 +6,9 @@ import (
 	"net/mail"
 	"os"
 
-	"github.com/antonybholmes/go-edb-server-mailer/consts"
-	"github.com/antonybholmes/go-mailer"
-	"github.com/antonybholmes/go-mailer/sesmailserver"
+	"github.com/antonybholmes/go-edb-mail-server/consts"
+	mailserver "github.com/antonybholmes/go_mailserver"
+	"github.com/antonybholmes/go_mailserver/sesmailserver"
 	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/panjf2000/ants"
@@ -69,14 +69,14 @@ func main() {
 
 // 	r := kafka.NewReader(kafka.ReaderConfig{
 // 		Brokers:   []string{"localhost:9094"}, // Kafka broker
-// 		Topic:     mailer.QUEUE_EMAIL_CHANNEL, // Topic name
+// 		Topic:     mailserver.QUEUE_EMAIL_CHANNEL, // Topic name
 // 		Partition: 0,
 // 		MaxBytes:  10e6, // 10MB
 // 	})
 
 // 	defer r.Close()
 
-// 	var qe mailer.QueueEmail
+// 	var qe mailserver.QueueEmail
 
 // 	for {
 // 		m, err := r.ReadMessage(ctx)
@@ -98,32 +98,32 @@ func main() {
 // 	}
 // }
 
-func sendEmailUsingPool(qe *mailer.QueueEmail, pool *ants.Pool) {
+func sendEmailUsingPool(qe *mailserver.QueueEmail, pool *ants.Pool) {
 	pool.Submit(func() { sendEmail(qe) })
 }
 
-func sendEmail(qe *mailer.QueueEmail) {
+func sendEmail(qe *mailserver.QueueEmail) {
 
 	switch qe.EmailType {
-	case mailer.QUEUE_EMAIL_TYPE_VERIFY:
+	case mailserver.QUEUE_EMAIL_TYPE_VERIFY:
 		SendVerifyEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_VERIFIED:
+	case mailserver.QUEUE_EMAIL_TYPE_VERIFIED:
 		SendVerifiedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_PASSWORDLESS:
+	case mailserver.QUEUE_EMAIL_TYPE_PASSWORDLESS:
 		SendPasswordlessSigninEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
+	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
 		SendPasswordResetEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
+	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
 		SendPasswordUpdatedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_EMAIL_RESET:
+	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_RESET:
 		SendEmailResetEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
+	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
 		SendEmailUpdatedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
+	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
 		SendAccountCreatedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
+	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
 		SendAccountUpdatedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_OTP:
+	case mailserver.QUEUE_EMAIL_TYPE_OTP:
 		SendOTPEmail(qe)
 	default:
 		log.Debug().Msgf("invalid email type: %s", qe.EmailType)

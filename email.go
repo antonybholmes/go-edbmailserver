@@ -7,9 +7,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/antonybholmes/go-edb-server-mailer/consts"
-	"github.com/antonybholmes/go-mailer"
-	"github.com/antonybholmes/go-mailer/sesmailserver"
+	"github.com/antonybholmes/go-edb-mail-server/consts"
+	mailserver "github.com/antonybholmes/go_mailserver"
+
+	"github.com/antonybholmes/go_mailserver/sesmailserver"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -26,7 +27,7 @@ type EmailBody struct {
 	DoNotReply string
 }
 
-func SendPasswordlessSigninEmail(qe *mailer.QueueEmail) error {
+func SendPasswordlessSigninEmail(qe *mailserver.QueueEmail) error {
 
 	var file string
 
@@ -44,7 +45,7 @@ func SendPasswordlessSigninEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendVerifyEmail(qe *mailer.QueueEmail) error {
+func SendVerifyEmail(qe *mailserver.QueueEmail) error {
 
 	var file string
 
@@ -60,7 +61,7 @@ func SendVerifyEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendVerifiedEmail(qe *mailer.QueueEmail) error {
+func SendVerifiedEmail(qe *mailserver.QueueEmail) error {
 
 	file := "templates/email/verify/verified.html"
 
@@ -70,7 +71,7 @@ func SendVerifiedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendPasswordResetEmail(qe *mailer.QueueEmail) error {
+func SendPasswordResetEmail(qe *mailserver.QueueEmail) error {
 
 	var file string
 
@@ -86,7 +87,7 @@ func SendPasswordResetEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendPasswordUpdatedEmail(qe *mailer.QueueEmail) error {
+func SendPasswordUpdatedEmail(qe *mailserver.QueueEmail) error {
 
 	var file string
 
@@ -102,7 +103,7 @@ func SendPasswordUpdatedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendEmailResetEmail(qe *mailer.QueueEmail) error {
+func SendEmailResetEmail(qe *mailserver.QueueEmail) error {
 
 	var file string
 
@@ -118,7 +119,7 @@ func SendEmailResetEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendEmailUpdatedEmail(qe *mailer.QueueEmail) error {
+func SendEmailUpdatedEmail(qe *mailserver.QueueEmail) error {
 
 	file := "templates/email/email/updated.html"
 
@@ -128,7 +129,7 @@ func SendEmailUpdatedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendAccountCreatedEmail(qe *mailer.QueueEmail) error {
+func SendAccountCreatedEmail(qe *mailserver.QueueEmail) error {
 
 	file := "templates/email/account/created.html"
 
@@ -138,7 +139,7 @@ func SendAccountCreatedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendAccountUpdatedEmail(qe *mailer.QueueEmail) error {
+func SendAccountUpdatedEmail(qe *mailserver.QueueEmail) error {
 
 	file := "templates/email/account/updated.html"
 
@@ -148,7 +149,7 @@ func SendAccountUpdatedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendOTPEmail(qe *mailer.QueueEmail) error {
+func SendOTPEmail(qe *mailserver.QueueEmail) error {
 
 	file := "templates/email/otp/totp.html"
 
@@ -167,7 +168,7 @@ func SendOTPEmail(qe *mailer.QueueEmail) error {
 }
 
 func SendEmailWithToken(subject string,
-	qe *mailer.QueueEmail,
+	qe *mailserver.QueueEmail,
 	linkUrl string,
 	file string) error {
 

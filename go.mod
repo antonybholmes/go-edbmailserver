@@ -1,8 +1,8 @@
-module github.com/antonybholmes/go-edb-server-mailer
+module github.com/antonybholmes/go_edbmailserver
 
 go 1.25
 
-replace github.com/antonybholmes/go-mailer => ../go-mailer
+replace github.com/antonybholmes/go_mailserver => ../go_mailserver
 
 replace github.com/antonybholmes/go-sys => ../go-sys
 
@@ -47,7 +47,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailer v0.0.0-20250812213425-21273ad7d6a8
+	github.com/antonybholmes/go_mailserver v0.0.0-20250812213425-21273ad7d6a8
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.5
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect

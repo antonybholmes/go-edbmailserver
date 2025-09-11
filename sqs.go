@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/antonybholmes/go-edb-server-mailer/consts"
-	"github.com/antonybholmes/go-mailer"
+	"github.com/antonybholmes/go-edb-mail-server/consts"
+	mailserver "github.com/antonybholmes/go_mailserver"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/panjf2000/ants"
@@ -28,7 +28,7 @@ func ConsumeSQS(pool *ants.Pool) {
 
 	client := sqs.NewFromConfig(cfg)
 
-	var qe mailer.QueueEmail
+	var qe mailserver.QueueEmail
 
 	for {
 		resp, err := client.ReceiveMessage(ctx, &sqs.ReceiveMessageInput{
