@@ -92,8 +92,8 @@ func sendEmail(qe *mailer.QueueEmail) {
 		SendAccountCreatedEmail(qe)
 	case mailer.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
 		SendAccountUpdatedEmail(qe)
-	case mailer.QUEUE_EMAIL_TYPE_TOTP:
-		SendTOTPEmail(qe)
+	case mailer.QUEUE_EMAIL_TYPE_OTP:
+		SendOTPEmail(qe)
 	default:
 		log.Debug().Msgf("invalid email type: %s", qe.EmailType)
 	}

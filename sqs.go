@@ -51,16 +51,18 @@ func ConsumeSQS(pool *ants.Pool) {
 				log.Debug().Msgf("email error")
 			}
 
+			handle := message.ReceiptHandle
+
 			_, err = client.DeleteMessage(ctx, &sqs.DeleteMessageInput{
 				QueueUrl:      consts.SQS_QUEUE_URL,
-				ReceiptHandle: message.ReceiptHandle,
+				ReceiptHandle: handle,
 			})
 
 			if err != nil {
 				log.Debug().Msgf("Failed to delete message: %v", err)
 			}
 
-			log.Debug().Msgf("Message %s deleted successfully\n", *message.ReceiptHandle)
+			log.Debug().Msgf("Message %s deleted successfully", *handle)
 
 			//log.Debug().Msgf("email %v %v", message.Body, qe.EmailType)
 

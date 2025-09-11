@@ -148,13 +148,13 @@ func SendAccountUpdatedEmail(qe *mailer.QueueEmail) error {
 		file)
 }
 
-func SendTOTPEmail(qe *mailer.QueueEmail) error {
+func SendOTPEmail(qe *mailer.QueueEmail) error {
 
 	file := "templates/email/otp/totp.html"
 
 	//log.Debug().Msgf("send totp email to %s", qe.To)
 
-	err := SendEmailWithToken("TOTP Code",
+	err := SendEmailWithToken("One-Time Password (OTP)",
 		qe,
 		"",
 		file)
@@ -235,7 +235,7 @@ func SendEmailWithToken(subject string,
 			Name:       firstName,
 			Link:       link,
 			From:       consts.NAME,
-			Time:       qe.Ttl,
+			Time:       qe.TTL,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
 
@@ -247,7 +247,7 @@ func SendEmailWithToken(subject string,
 			Name:       firstName,
 			Link:       qe.Token,
 			From:       consts.NAME,
-			Time:       qe.Ttl,
+			Time:       qe.TTL,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
 
