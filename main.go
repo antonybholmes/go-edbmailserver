@@ -41,9 +41,9 @@ func initLogger() {
 }
 
 func init() {
-	env.Ls()
-
 	initLogger()
+
+	env.Ls()
 
 	from := sys.Must(mail.ParseAddress(env.GetStr("FROM", "")))
 
