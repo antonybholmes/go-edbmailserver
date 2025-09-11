@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/antonybholmes/go-edb-mail-server/consts"
-	mailserver "github.com/antonybholmes/go_mailserver"
+	"github.com/antonybholmes/go-edbmailserver/consts"
+	mailserver "github.com/antonybholmes/go-mailserver"
 	"github.com/panjf2000/ants"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"

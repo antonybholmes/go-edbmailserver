@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/antonybholmes/go-edb-mail-server/consts"
-	mailserver "github.com/antonybholmes/go_mailserver"
+	"github.com/antonybholmes/go-edbmailserver/consts"
+	mailserver "github.com/antonybholmes/go-mailserver"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/panjf2000/ants"

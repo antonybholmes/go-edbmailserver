@@ -6,9 +6,9 @@ import (
 	"net/mail"
 	"os"
 
-	"github.com/antonybholmes/go-edb-mail-server/consts"
-	mailserver "github.com/antonybholmes/go_mailserver"
-	"github.com/antonybholmes/go_mailserver/sesmailserver"
+	"github.com/antonybholmes/go-edbmailserver/consts"
+	mailserver "github.com/antonybholmes/go-mailserver"
+	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/panjf2000/ants"

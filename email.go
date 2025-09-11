@@ -7,10 +7,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/antonybholmes/go-edb-mail-server/consts"
-	mailserver "github.com/antonybholmes/go_mailserver"
+	"github.com/antonybholmes/go-edbmailserver/consts"
+	mailserver "github.com/antonybholmes/go-mailserver"
 
-	"github.com/antonybholmes/go_mailserver/sesmailserver"
+	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
