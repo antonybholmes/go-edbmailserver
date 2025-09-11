@@ -45,7 +45,7 @@ func init() {
 
 	env.Ls()
 
-	from := sys.Must(mail.ParseAddress(env.GetStr("FROM", "")))
+	from := sys.Must(mail.ParseAddress(env.GetStr("SMTP_FROM", "")))
 
 	sesmailserver.Init(from)
 }
