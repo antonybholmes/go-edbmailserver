@@ -28,7 +28,9 @@ func ConsumeSQS(pool *ants.Pool) {
 
 	client := sqs.NewFromConfig(cfg)
 
-	var qe mailserver.QueueEmail
+	var m mailserver.MailItem
+
+	log.Debug().Msgf("start sqs %s", *consts.SQS_QUEUE_URL)
 
 	for {
 		resp, err := client.ReceiveMessage(ctx, &sqs.ReceiveMessageInput{
@@ -45,7 +47,7 @@ func ConsumeSQS(pool *ants.Pool) {
 
 		for _, message := range resp.Messages {
 
-			err = json.Unmarshal([]byte(*message.Body), &qe)
+			err = json.Unmarshal([]byte(*message.Body), &m)
 
 			if err != nil {
 				log.Debug().Msgf("email error")
@@ -67,7 +69,7 @@ func ConsumeSQS(pool *ants.Pool) {
 			//log.Debug().Msgf("email %v %v", message.Body, qe.EmailType)
 
 			//sendEmailUsingPool(&qe, pool)
-			sendEmail(&qe)
+			sendEmail(&m)
 		}
 	}
 }

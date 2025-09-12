@@ -27,11 +27,11 @@ type EmailBody struct {
 	DoNotReply string
 }
 
-func SendPasswordlessSigninEmail(qe *mailserver.QueueEmail) error {
+func SendPasswordlessSigninEmail(mail *mailserver.MailItem) error {
 
 	var file string
 
-	if qe.Mode == "api" {
+	if mail.Mode == "api" {
 		file = "templates/email/passwordless/api.html"
 	} else {
 		file = "templates/email/passwordless/web.html"
@@ -40,139 +40,139 @@ func SendPasswordlessSigninEmail(qe *mailserver.QueueEmail) error {
 	//file := "templates/email/passwordless/web.html"
 
 	return SendEmailWithToken("Passwordless Sign In",
-		qe,
+		mail,
 		consts.URL_SIGN_IN,
 		file)
 }
 
-func SendVerifyEmail(qe *mailserver.QueueEmail) error {
+func SendVerifyEmail(mail *mailserver.MailItem) error {
 
 	var file string
 
-	if qe.Mode == "api" {
+	if mail.Mode == "api" {
 		file = "templates/email/verify/api.html"
 	} else {
 		file = "templates/email/verify/web.html"
 	}
 
 	return SendEmailWithToken("Email Address Verification",
-		qe,
+		mail,
 		consts.URL_VERIFY_EMAIL,
 		file)
 }
 
-func SendVerifiedEmail(qe *mailserver.QueueEmail) error {
+func SendVerifiedEmail(mail *mailserver.MailItem) error {
 
 	file := "templates/email/verify/verified.html"
 
 	return SendEmailWithToken("Email Address Verified",
-		qe,
+		mail,
 		"",
 		file)
 }
 
-func SendPasswordResetEmail(qe *mailserver.QueueEmail) error {
+func SendPasswordResetEmail(mail *mailserver.MailItem) error {
 
 	var file string
 
-	if qe.LinkUrl != "" {
+	if mail.LinkUrl != "" {
 		file = "templates/email/password/reset/web.html"
 	} else {
 		file = "templates/email/password/reset/api.html"
 	}
 
 	return SendEmailWithToken("Password Reset",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendPasswordUpdatedEmail(qe *mailserver.QueueEmail) error {
+func SendPasswordUpdatedEmail(mail *mailserver.MailItem) error {
 
 	var file string
 
-	if qe.LinkUrl != "" {
+	if mail.LinkUrl != "" {
 		file = "templates/email/password/switch-to-passwordless.html"
 	} else {
 		file = "templates/email/password/updated.html"
 	}
 
 	return SendEmailWithToken("Password Updated",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendEmailResetEmail(qe *mailserver.QueueEmail) error {
+func SendEmailResetEmail(mail *mailserver.MailItem) error {
 
 	var file string
 
-	if qe.LinkUrl != "" {
+	if mail.LinkUrl != "" {
 		file = "templates/email/email/reset/web.html"
 	} else {
 		file = "templates/email/email/reset/api.html"
 	}
 
 	return SendEmailWithToken("Email Reset",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendEmailUpdatedEmail(qe *mailserver.QueueEmail) error {
+func SendEmailUpdatedEmail(mail *mailserver.MailItem) error {
 
 	file := "templates/email/email/updated.html"
 
 	return SendEmailWithToken("Email Updated",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendAccountCreatedEmail(qe *mailserver.QueueEmail) error {
+func SendAccountCreatedEmail(mail *mailserver.MailItem) error {
 
 	file := "templates/email/account/created.html"
 
 	return SendEmailWithToken("Account Created",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendAccountUpdatedEmail(qe *mailserver.QueueEmail) error {
+func SendAccountUpdatedEmail(mail *mailserver.MailItem) error {
 
 	file := "templates/email/account/updated.html"
 
 	return SendEmailWithToken("Account Updated",
-		qe,
-		qe.LinkUrl,
+		mail,
+		mail.LinkUrl,
 		file)
 }
 
-func SendOTPEmail(qe *mailserver.QueueEmail) error {
+func SendOTPEmail(mail *mailserver.MailItem) error {
 
-	file := "templates/email/otp/totp.html"
+	file := "templates/email/otp/otp.html"
 
-	//log.Debug().Msgf("send totp email to %s", qe.To)
+	//log.Debug().Msgf("send totp email to %s", mail.To)
 
 	err := SendEmailWithToken("One-Time Password (OTP)",
-		qe,
+		mail,
 		"",
 		file)
 
 	// if err != nil {
-	// 	log.Debug().Msgf("error sending totp email to %s: %v", qe.To, err)
+	// 	log.Debug().Msgf("error sending totp email to %s: %v", mail.To, err)
 	// }
 
 	return err
 }
 
 func SendEmailWithToken(subject string,
-	qe *mailserver.QueueEmail,
+	m *mailserver.MailItem,
 	linkUrl string,
 	file string) error {
 
-	address, err := mail.ParseAddress(qe.To)
+	address, err := mail.ParseAddress(m.To)
 
 	if err != nil {
 		return err
@@ -188,8 +188,8 @@ func SendEmailWithToken(subject string,
 
 	var firstName string = ""
 
-	if qe.Name != "" {
-		firstName = qe.Name
+	if m.Name != "" {
+		firstName = m.Name
 	} else {
 		firstName = strings.Split(address.Address, "@")[0]
 		c := cases.Title(language.English)
@@ -221,8 +221,8 @@ func SendEmailWithToken(subject string,
 		//	params.Set(REDIRECT_URL_PARAM, qe.RedirectUrl)
 		//}
 
-		if qe.Token != "" {
-			params.Set(JWT_PARAM, qe.Token)
+		if m.Token != "" {
+			params.Set(JWT_PARAM, m.Token)
 		}
 
 		// once we've added extra params, update the
@@ -236,7 +236,7 @@ func SendEmailWithToken(subject string,
 			Name:       firstName,
 			Link:       link,
 			From:       consts.NAME,
-			Time:       qe.TTL,
+			Time:       m.TTL,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
 
@@ -246,9 +246,9 @@ func SendEmailWithToken(subject string,
 	} else {
 		err = t.Execute(&body, EmailBody{
 			Name:       firstName,
-			Link:       qe.Token,
+			Link:       m.Token,
 			From:       consts.NAME,
-			Time:       qe.TTL,
+			Time:       m.TTL,
 			DoNotReply: consts.DO_NOT_REPLY,
 		})
 
@@ -259,7 +259,7 @@ func SendEmailWithToken(subject string,
 
 	//log.Debug().Msgf("email %v %v %v", address, subject, body.String())
 
-	err = sesmailserver.SendHtmlEmail(address, subject, body.String())
+	err = sesmailserver.SendHtmlMail(address, subject, body.String())
 
 	if err != nil {
 		return err

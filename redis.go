@@ -31,7 +31,7 @@ func ConsumeRedis(pool *ants.Pool) {
 
 	subscriber := rdb.Subscribe(ctx, mailserver.QUEUE_EMAIL_CHANNEL)
 
-	var qe mailserver.QueueEmail
+	var m mailserver.MailItem
 
 	for {
 		msg, err := subscriber.ReceiveMessage(ctx)
@@ -40,7 +40,7 @@ func ConsumeRedis(pool *ants.Pool) {
 			panic(err)
 		}
 
-		err = json.Unmarshal([]byte(msg.Payload), &qe)
+		err = json.Unmarshal([]byte(msg.Payload), &m)
 
 		if err != nil {
 			log.Debug().Msgf("email error")
@@ -48,6 +48,6 @@ func ConsumeRedis(pool *ants.Pool) {
 
 		//log.Debug().Msgf("email %s %v", msg.Payload, qe.EmailType)
 
-		sendEmailUsingPool(&qe, pool)
+		sendEmailUsingPool(&m, pool)
 	}
 }

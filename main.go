@@ -98,35 +98,37 @@ func main() {
 // 	}
 // }
 
-func sendEmailUsingPool(qe *mailserver.QueueEmail, pool *ants.Pool) {
-	pool.Submit(func() { sendEmail(qe) })
+func sendEmailUsingPool(m *mailserver.MailItem, pool *ants.Pool) {
+	pool.Submit(func() { sendEmail(m) })
 }
 
-func sendEmail(qe *mailserver.QueueEmail) {
+func sendEmail(m *mailserver.MailItem) {
 
-	switch qe.EmailType {
+	//log.Debug().Msgf("send email %s %s", m.To, m.EmailType)
+
+	switch m.EmailType {
 	case mailserver.QUEUE_EMAIL_TYPE_VERIFY:
-		SendVerifyEmail(qe)
+		SendVerifyEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_VERIFIED:
-		SendVerifiedEmail(qe)
+		SendVerifiedEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_PASSWORDLESS:
-		SendPasswordlessSigninEmail(qe)
+		SendPasswordlessSigninEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
-		SendPasswordResetEmail(qe)
+		SendPasswordResetEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
-		SendPasswordUpdatedEmail(qe)
+		SendPasswordUpdatedEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_RESET:
-		SendEmailResetEmail(qe)
+		SendEmailResetEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
-		SendEmailUpdatedEmail(qe)
+		SendEmailUpdatedEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
-		SendAccountCreatedEmail(qe)
+		SendAccountCreatedEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
-		SendAccountUpdatedEmail(qe)
+		SendAccountUpdatedEmail(m)
 	case mailserver.QUEUE_EMAIL_TYPE_OTP:
-		SendOTPEmail(qe)
+		SendOTPEmail(m)
 	default:
-		log.Debug().Msgf("invalid email type: %s", qe.EmailType)
+		log.Debug().Msgf("invalid email type: %s", m.EmailType)
 	}
 
 }
