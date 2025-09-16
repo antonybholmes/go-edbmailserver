@@ -47,7 +47,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailserver v0.0.0-20250911221245-fddbae39b592
+	github.com/antonybholmes/go-mailserver v0.0.0-20250912220824-1953053c63aa
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.5
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
