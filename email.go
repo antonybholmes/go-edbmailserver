@@ -23,6 +23,7 @@ type EmailBody struct {
 	Name       string
 	From       string
 	Time       string
+	Code       string
 	Link       string
 	DoNotReply string
 }
@@ -198,14 +199,16 @@ func SendEmailWithToken(subject string,
 
 	firstName = strings.Split(firstName, " ")[0]
 
+	link := ""
+
 	if linkUrl != "" {
-		_linkUrl, err := url.Parse(linkUrl)
+		parsedUrl, err := url.Parse(linkUrl)
 
 		if err != nil {
 			return err
 		}
 
-		params, err := url.ParseQuery(_linkUrl.RawQuery)
+		params, err := url.ParseQuery(parsedUrl.RawQuery)
 
 		if err != nil {
 			return err
@@ -227,34 +230,35 @@ func SendEmailWithToken(subject string,
 
 		// once we've added extra params, update the
 		// raw query again
-		_linkUrl.RawQuery = params.Encode()
+		parsedUrl.RawQuery = params.Encode()
 
 		// the complete url with params
-		link := _linkUrl.String()
+		link = parsedUrl.String()
 
-		err = t.Execute(&body, EmailBody{
-			Name:       firstName,
-			Link:       link,
-			From:       consts.NAME,
-			Time:       m.TTL,
-			DoNotReply: consts.DO_NOT_REPLY,
-		})
+		// err = t.Execute(&body, EmailBody{
+		// 	Name:       firstName,
+		// 	Link:       link,
+		// 	From:       consts.NAME,
+		// 	Time:       m.TTL,
+		// 	DoNotReply: consts.DO_NOT_REPLY,
+		// })
 
-		if err != nil {
-			return err
-		}
-	} else {
-		err = t.Execute(&body, EmailBody{
-			Name:       firstName,
-			Link:       m.Token,
-			From:       consts.NAME,
-			Time:       m.TTL,
-			DoNotReply: consts.DO_NOT_REPLY,
-		})
+		// if err != nil {
+		// 	return err
+		// }
+	}
 
-		if err != nil {
-			return err
-		}
+	err = t.Execute(&body, EmailBody{
+		Name:       firstName,
+		Code:       m.Token,
+		Link:       link,
+		From:       consts.NAME,
+		Time:       m.TTL,
+		DoNotReply: consts.DO_NOT_REPLY,
+	})
+
+	if err != nil {
+		return err
 	}
 
 	//log.Debug().Msgf("email %v %v %v", address, subject, body.String())

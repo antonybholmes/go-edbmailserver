@@ -1,12 +1,15 @@
 <!-- email.html -->
 <!DOCTYPE html>
 <html>
-<body>
+  <body>
     <p>Hi {{.Name}},</p>
-    <p>Please click on this link, or copy it to your web browser, for a secure, passwordless sign in: <a href="{{.Link}}">{{.Link}}</a></p>
+    <p>
+      Please click on this link, or copy it to your web browser, for a secure,
+      passwordless sign in: <a href="{{.Link}}">{{.Link}}</a>
+    </p>
     <p></p>
     <p>The link is valid for {{.Time}}.</p>
     <p></p>
     <p>{{.DoNotReply}}</p>
-</body>
+  </body>
 </html>
