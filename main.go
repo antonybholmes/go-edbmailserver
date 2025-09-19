@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
+	"github.com/antonybholmes/go-edbmailserver/edbmailserver"
 	mailserver "github.com/antonybholmes/go-mailserver"
 	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"github.com/antonybholmes/go-sys"
@@ -108,26 +109,26 @@ func sendEmail(m *mailserver.MailItem) {
 	//log.Debug().Msgf("send email %s %s", m.To, m.EmailType)
 
 	switch m.EmailType {
-	case mailserver.QUEUE_EMAIL_TYPE_VERIFY:
-		SendVerifyEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_VERIFIED:
-		SendVerifiedEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_PASSWORDLESS:
-		SendPasswordlessSigninEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
-		SendPasswordResetEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
-		SendPasswordUpdatedEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_RESET:
-		SendEmailResetEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
-		SendEmailUpdatedEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
-		SendAccountCreatedEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
-		SendAccountUpdatedEmail(m)
-	case mailserver.QUEUE_EMAIL_TYPE_OTP:
-		SendOTPEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_VERIFY:
+		edbmailserver.SendVerifyEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_VERIFIED:
+		edbmailserver.SendVerifiedEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_PASSWORDLESS:
+		edbmailserver.SendPasswordlessSigninEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
+		edbmailserver.SendPasswordResetEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
+		edbmailserver.SendPasswordUpdatedEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_EMAIL_RESET:
+		edbmailserver.SendEmailResetEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
+		edbmailserver.SendEmailUpdatedEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
+		edbmailserver.SendAccountCreatedEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
+		edbmailserver.SendAccountUpdatedEmail(m)
+	case edbmailserver.QUEUE_EMAIL_TYPE_OTP:
+		edbmailserver.SendOTPEmail(m)
 	default:
 		log.Debug().Msgf("invalid email type: %s", m.EmailType)
 	}

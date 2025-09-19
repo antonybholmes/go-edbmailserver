@@ -1,11 +1,11 @@
-package main
+package edbmailserver
 
 import (
 	"bytes"
+	"html/template"
 	"net/mail"
 	"net/url"
 	"strings"
-	"text/template"
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
 	mailserver "github.com/antonybholmes/go-mailserver"
@@ -16,16 +16,21 @@ import (
 )
 
 const JWT_PARAM = "jwt"
+const FOOTER_TEMPLATE = "templates/email/footer.html"
 
 //const REDIRECT_URL_PARAM = "redirectUrl"
 
+type TimeSensitive struct {
+	ContentType string
+	Time        string
+}
 type EmailBody struct {
-	Name       string
-	From       string
-	Time       string
-	Code       string
-	Link       string
-	DoNotReply string
+	Name          string
+	From          string
+	TimeSensitive *TimeSensitive
+	Payload       *mailserver.Payload
+	Link          string
+	DoNotReply    string
 }
 
 func SendPasswordlessSigninEmail(mail *mailserver.MailItem) error {
@@ -156,7 +161,7 @@ func SendOTPEmail(mail *mailserver.MailItem) error {
 
 	//log.Debug().Msgf("send totp email to %s", mail.To)
 
-	err := SendEmailWithToken("One-Time Password (OTP)",
+	err := SendEmailWithToken("One-Time Passcode",
 		mail,
 		"",
 		file)
@@ -173,6 +178,10 @@ func SendEmailWithToken(subject string,
 	linkUrl string,
 	file string) error {
 
+	//baseName := filepath.Base(file)
+
+	//log.Debug().Msgf("send email %s to %s using %s", subject, m.To, baseName)
+
 	address, err := mail.ParseAddress(m.To)
 
 	if err != nil {
@@ -181,7 +190,7 @@ func SendEmailWithToken(subject string,
 
 	var body bytes.Buffer
 
-	t, err := template.ParseFiles(file)
+	t, err := template.ParseFiles(file, FOOTER_TEMPLATE)
 
 	if err != nil {
 		return err
@@ -200,6 +209,10 @@ func SendEmailWithToken(subject string,
 	firstName = strings.Split(firstName, " ")[0]
 
 	link := ""
+
+	if m.Payload != nil && m.Payload.DataType == "link" {
+		link = m.Payload.Data
+	}
 
 	if linkUrl != "" {
 		parsedUrl, err := url.Parse(linkUrl)
@@ -224,8 +237,8 @@ func SendEmailWithToken(subject string,
 		//	params.Set(REDIRECT_URL_PARAM, qe.RedirectUrl)
 		//}
 
-		if m.Token != "" {
-			params.Set(JWT_PARAM, m.Token)
+		if m.Payload != nil && m.Payload.DataType == "jwt" {
+			params.Set(JWT_PARAM, m.Payload.Data)
 		}
 
 		// once we've added extra params, update the
@@ -248,14 +261,34 @@ func SendEmailWithToken(subject string,
 		// }
 	}
 
-	err = t.Execute(&body, EmailBody{
+	emailBody := EmailBody{
 		Name:       firstName,
-		Code:       m.Token,
+		Payload:    m.Payload,
 		Link:       link,
 		From:       consts.NAME,
-		Time:       m.TTL,
 		DoNotReply: consts.DO_NOT_REPLY,
-	})
+	}
+
+	if m.TTL != "" {
+		contentType := "token"
+
+		if link != "" {
+			contentType = "link"
+		} else {
+			if m.Payload != nil {
+				if m.Payload.DataType != "jwt" {
+					contentType = m.Payload.DataType
+				}
+			}
+		}
+
+		emailBody.TimeSensitive = &TimeSensitive{
+			ContentType: contentType,
+			Time:        m.TTL,
+		}
+	}
+
+	err = t.ExecuteTemplate(&body, "layout", emailBody)
 
 	if err != nil {
 		return err

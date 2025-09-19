@@ -1,12 +1,13 @@
 <!-- email.html -->
+{{define "layout"}}
 <!DOCTYPE html>
 <html>
   <body>
     <p>Hi {{.Name}},</p>
-    <p>Please verify your email address using this code: {{.Code}}</p>
+    <p>Please verify your email address using this code: {{.Payload.Data}}</p>
     <p></p>
-    <p>This code is valid for {{.Time}}.</p>
-    <p></p>
-    <p>{{.DoNotReply}}</p>
+    {{template "footer" . }}
   </body>
 </html>
+
+{{end}}

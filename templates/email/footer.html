@@ -1,0 +1,18 @@
+{{define "footer"}}
+<p></p>
+<footer>
+  <p></p>
+  {{if .TimeSensitive}}
+  <p>
+    This {{ .TimeSensitive.ContentType }} is valid for {{ .TimeSensitive.Time
+    }}.
+  </p>
+  {{end}}
+
+  <p></p>
+
+  {{if .DoNotReply}}
+  <p>{{.DoNotReply}}</p>
+  {{end}}
+</footer>
+{{end}}

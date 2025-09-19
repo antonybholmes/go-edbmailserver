@@ -1,4 +1,5 @@
 <!-- email.html -->
+{{define "layout"}}
 <!DOCTYPE html>
 <html>
   <body>
@@ -7,9 +8,8 @@
       Please verify your email address using this link:
       <a href="{{.Link}}">{{.Link}}</a>
     </p>
-    <p></p>
-    <p>This link is valid for {{.Time}}.</p>
-    <p></p>
-    <p>{{.DoNotReply}}</p>
+    {{template "footer" . }}
   </body>
 </html>
+
+{{end}}
