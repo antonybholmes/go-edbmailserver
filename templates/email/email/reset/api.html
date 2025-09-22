@@ -4,12 +4,13 @@
 <html>
   <body>
     <p>Hi {{.Name}},</p>
+    <br />
     <p>
       Please use this code to reset change your email address: {{.Payload.Data}}
     </p>
-    <p></p>
+    <br />
     <p>If you did not request a password reset, please ignore this email.</p>
-    <p></p>
+    <br />
     {{template "footer" . }}
   </body>
 </html>

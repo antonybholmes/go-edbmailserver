@@ -4,6 +4,7 @@
 <html>
   <body>
     <p>Hi {{.Name}},</p>
+    <br />
     <p>Please use this code for passwordless sign in: {{.Payload.Data}}</p>
     {{template "footer" . }}
   </body>

@@ -4,7 +4,10 @@
 <html>
   <body>
     <p>Hi {{.Name}},</p>
-    <p>Your one-time passcode is: <strong>{{.Payload.Data}}</strong></p>
+    <p>
+      Your one-time passcode to sign in to Experiments is:
+      <strong>{{.Payload.Data}}</strong>
+    </p>
 
     {{template "footer" . }}
   </body>

@@ -4,8 +4,9 @@
 <html>
   <body>
     <p>Hi {{.Name}},</p>
+    <br />
     <p>Please use this code to reset your password: {{.Payload.Data}}</p>
-    <p></p>
+    <br />
     <p>If you did not request a password reset, please ignore this email.</p>
     {{template "footer" . }}
   </body>

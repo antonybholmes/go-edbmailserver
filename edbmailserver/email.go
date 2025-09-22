@@ -9,6 +9,7 @@ import (
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
 	mailserver "github.com/antonybholmes/go-mailserver"
+	"github.com/rs/zerolog/log"
 
 	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"golang.org/x/text/cases"
@@ -161,7 +162,7 @@ func SendOTPEmail(mail *mailserver.MailItem) error {
 
 	//log.Debug().Msgf("send totp email to %s", mail.To)
 
-	err := SendEmailWithToken("One-Time Passcode",
+	err := SendEmailWithToken("One-Time Passcode For Experiments Sign In",
 		mail,
 		"",
 		file)
@@ -301,6 +302,8 @@ func SendEmailWithToken(subject string,
 	if err != nil {
 		return err
 	}
+
+	log.Info().Msgf("Email of type %s sent to %s for %s", m.EmailType, address.Address, subject)
 
 	return nil
 }
