@@ -303,7 +303,7 @@ func SendEmailWithToken(subject string,
 		return err
 	}
 
-	log.Info().Msgf("Email of type %s sent to %s for %s", m.EmailType, address.Address, subject)
+	log.Info().Msgf("Email of type %s sent to %s", m.EmailType, address.Address)
 
 	return nil
 }
