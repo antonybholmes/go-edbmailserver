@@ -48,7 +48,7 @@ func SendPasswordlessSigninEmail(mail *mailserver.MailItem) error {
 
 	return SendEmailWithToken("Passwordless Sign In",
 		mail,
-		consts.URL_SIGN_IN,
+		consts.UrlSignIn,
 		file)
 }
 
@@ -64,7 +64,7 @@ func SendVerifyEmail(mail *mailserver.MailItem) error {
 
 	return SendEmailWithToken("Email Address Verification",
 		mail,
-		consts.URL_VERIFY_EMAIL,
+		consts.UrlVerifyEmail,
 		file)
 }
 
@@ -266,8 +266,8 @@ func SendEmailWithToken(subject string,
 		Name:       firstName,
 		Payload:    m.Payload,
 		Link:       link,
-		From:       consts.NAME,
-		DoNotReply: consts.DO_NOT_REPLY,
+		From:       consts.Name,
+		DoNotReply: consts.TextDoNotReply,
 	}
 
 	if m.TTL != "" {

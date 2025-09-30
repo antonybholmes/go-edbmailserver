@@ -18,18 +18,16 @@ func ConsumeRedis(pool *ants.Pool) {
 
 	var ctx = context.Background()
 
-	log.Debug().Msgf("start rdb %s", consts.REDIS_PASSWORD)
-
 	var rdb = redis.NewClient(&redis.Options{
-		Addr:     consts.REDIS_ADDR,
+		Addr:     consts.RedisAddr,
 		Username: "edb",
-		Password: consts.REDIS_PASSWORD, // no password set
-		DB:       0,                     // use default DB
+		Password: consts.RedisPassword, // no password set
+		DB:       0,                    // use default DB
 	})
 
-	log.Debug().Msgf("%s %s", consts.APP_NAME, consts.REDIS_ADDR)
+	log.Debug().Msgf("%s %s", consts.AppName, consts.RedisAddr)
 
-	subscriber := rdb.Subscribe(ctx, mailserver.QUEUE_EMAIL_CHANNEL)
+	subscriber := rdb.Subscribe(ctx, mailserver.EmailQueueChannel)
 
 	var m mailserver.MailItem
 

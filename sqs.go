@@ -30,11 +30,11 @@ func ConsumeSQS(pool *ants.Pool) {
 
 	var m mailserver.MailItem
 
-	log.Debug().Msgf("start sqs %s", *consts.SQS_QUEUE_URL)
+	log.Debug().Msgf("start sqs %s", *consts.SqsQueueURL)
 
 	for {
 		resp, err := client.ReceiveMessage(ctx, &sqs.ReceiveMessageInput{
-			QueueUrl:            consts.SQS_QUEUE_URL,
+			QueueUrl:            consts.SqsQueueURL,
 			MaxNumberOfMessages: MAX_MESSAGES,
 			WaitTimeSeconds:     WAIT_TIME_SECONDS,
 		})
@@ -56,7 +56,7 @@ func ConsumeSQS(pool *ants.Pool) {
 			handle := message.ReceiptHandle
 
 			_, err = client.DeleteMessage(ctx, &sqs.DeleteMessageInput{
-				QueueUrl:      consts.SQS_QUEUE_URL,
+				QueueUrl:      consts.SqsQueueURL,
 				ReceiptHandle: handle,
 			})
 

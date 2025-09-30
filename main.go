@@ -20,7 +20,7 @@ import (
 
 func initLogger() {
 	fileLogger := &lumberjack.Logger{
-		Filename:   fmt.Sprintf("logs/%s.log", consts.APP_NAME),
+		Filename:   fmt.Sprintf("logs/%s.log", consts.AppName),
 		MaxSize:    10,   // Max size in MB before rotating
 		MaxBackups: 3,    // Keep 3 backup files
 		MaxAge:     7,    // Retain files for 7 days
