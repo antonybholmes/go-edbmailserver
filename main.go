@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
-	mail1 "github.com/antonybholmes/go-edbmailserver/mail"
+	edbmail "github.com/antonybholmes/go-edbmailserver/mail"
 	mailserver "github.com/antonybholmes/go-mailserver"
 	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"github.com/antonybholmes/go-sys"
@@ -109,26 +109,26 @@ func sendEmail(m *mailserver.MailItem) {
 	//log.Debug().Msgf("send email %s %s", m.To, m.EmailType)
 
 	switch m.EmailType {
-	case mail1.QUEUE_EMAIL_TYPE_VERIFY:
-		mail1.SendVerifyEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_VERIFIED:
-		mail1.SendVerifiedEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_PASSWORDLESS:
-		mail1.SendPasswordlessSigninEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_PASSWORD_RESET:
-		mail1.SendPasswordResetEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_PASSWORD_UPDATED:
-		mail1.SendPasswordUpdatedEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_EMAIL_RESET:
-		mail1.SendEmailResetEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_EMAIL_UPDATED:
-		mail1.SendEmailUpdatedEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_ACCOUNT_CREATED:
-		mail1.SendAccountCreatedEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_ACCOUNT_UPDATED:
-		mail1.SendAccountUpdatedEmail(m)
-	case mail1.QUEUE_EMAIL_TYPE_OTP:
-		mail1.SendOTPEmail(m)
+	case edbmail.EmailQueueTypeVerify:
+		edbmail.SendVerifyEmail(m)
+	case edbmail.EmailQueueTypeVerified:
+		edbmail.SendVerifiedEmail(m)
+	case edbmail.EmailQueueTypePasswordless:
+		edbmail.SendPasswordlessSigninEmail(m)
+	case edbmail.EmailQueueTypePasswordReset:
+		edbmail.SendPasswordResetEmail(m)
+	case edbmail.EmailQueueTypePasswordUpdated:
+		edbmail.SendPasswordUpdatedEmail(m)
+	case edbmail.EmailQueueTypeEmailReset:
+		edbmail.SendEmailResetEmail(m)
+	case edbmail.EmailQueueTypeEmailUpdated:
+		edbmail.SendEmailUpdatedEmail(m)
+	case edbmail.EmailQueueTypeAccountCreated:
+		edbmail.SendAccountCreatedEmail(m)
+	case edbmail.EmailQueueTypeAccountUpdated:
+		edbmail.SendAccountUpdatedEmail(m)
+	case edbmail.EmailQueueTypeOTP:
+		edbmail.SendOTPEmail(m)
 	default:
 		log.Debug().Msgf("invalid email type: %s", m.EmailType)
 	}
