@@ -49,7 +49,7 @@ func init() {
 
 	from := sys.Must(mail.ParseAddress(env.GetStr("SMTP_FROM", "")))
 
-	sesmailserver.Init(from)
+	sesmailserver.InitSesMailer(from)
 }
 
 func main() {
