@@ -8,9 +8,11 @@ import (
 )
 
 const (
-	Name           = "Experiments Mail Server"
-	AppName        = "edb-mail-server"
-	TextDoNotReply = "Please do not reply to this message. It was sent from a notification-only email address that we don't monitor."
+	AppName        = "Experiments Mail Server"
+	AppId          = "edb-mail-server"
+	EmailFrom      = "Experiments Team <donotreply@rdf-lab.org>"
+	ProductName    = "Experiments"
+	TextDoNotReply = "Please do not reply to this email as we are not able to respond to messages sent to this address." //"Please do not reply to this message. It was sent from a notification-only email address that we don't monitor."
 )
 
 var (

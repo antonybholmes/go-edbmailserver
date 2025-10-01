@@ -2,6 +2,7 @@ package mail
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 	"net/mail"
 	"net/url"
@@ -16,10 +17,23 @@ import (
 	"golang.org/x/text/language"
 )
 
-const JWT_PARAM = "jwt"
-const FOOTER_TEMPLATE = "templates/email/footer.html"
+const (
+	JwtParam       = "jwt"
+	FooterTemplate = "templates/email/footer.html"
 
-//const REDIRECT_URL_PARAM = "redirectUrl"
+	EmailQueueTypeVerify          = "verify"
+	EmailQueueTypeVerified        = "verified"
+	EmailQueueTypePasswordless    = "passwordless"
+	EmailQueueTypePasswordReset   = "password-reset"
+	EmailQueueTypePasswordUpdated = "password-updated"
+	EmailQueueTypeEmailReset      = "email-reset"
+	EmailQueueTypeEmailUpdated    = "email-updated"
+	EmailQueueTypeAccountCreated  = "account-created"
+	EmailQueueTypeAccountUpdated  = "account-updated"
+	EmailQueueTypeOTP             = "otp"
+)
+
+//const RedirectUrlParam = "redirectUrl"
 
 type TimeSensitive struct {
 	ContentType string
@@ -162,7 +176,7 @@ func SendOTPEmail(mail *mailserver.MailItem) error {
 
 	//log.Debug().Msgf("send totp email to %s", mail.To)
 
-	err := SendEmailWithToken("One-Time Passcode For Experiments Sign In",
+	err := SendEmailWithToken(fmt.Sprintf("%s One-Time Passcode", consts.ProductName),
 		mail,
 		"",
 		file)
@@ -191,7 +205,7 @@ func SendEmailWithToken(subject string,
 
 	var body bytes.Buffer
 
-	t, err := template.ParseFiles(file, FOOTER_TEMPLATE)
+	t, err := template.ParseFiles(file, FooterTemplate)
 
 	if err != nil {
 		return err
@@ -239,7 +253,7 @@ func SendEmailWithToken(subject string,
 		//}
 
 		if m.Payload != nil && m.Payload.DataType == "jwt" {
-			params.Set(JWT_PARAM, m.Payload.Data)
+			params.Set(JwtParam, m.Payload.Data)
 		}
 
 		// once we've added extra params, update the
@@ -266,7 +280,7 @@ func SendEmailWithToken(subject string,
 		Name:       firstName,
 		Payload:    m.Payload,
 		Link:       link,
-		From:       consts.Name,
+		From:       consts.AppName,
 		DoNotReply: consts.TextDoNotReply,
 	}
 
@@ -303,7 +317,39 @@ func SendEmailWithToken(subject string,
 		return err
 	}
 
-	log.Info().Msgf("Email of type %s sent to %s", m.EmailType, address.Address)
+	log.Info().Msgf("%s email sent to %s", m.EmailType, address.Address)
+
+	return nil
+}
+
+func SendEmail(m *mailserver.MailItem) error {
+
+	//log.Debug().Msgf("send email %s %s", m.To, m.EmailType)
+
+	switch m.EmailType {
+	case EmailQueueTypeVerify:
+		return SendVerifyEmail(m)
+	case EmailQueueTypeVerified:
+		return SendVerifiedEmail(m)
+	case EmailQueueTypePasswordless:
+		return SendPasswordlessSigninEmail(m)
+	case EmailQueueTypePasswordReset:
+		return SendPasswordResetEmail(m)
+	case EmailQueueTypePasswordUpdated:
+		return SendPasswordUpdatedEmail(m)
+	case EmailQueueTypeEmailReset:
+		return SendEmailResetEmail(m)
+	case EmailQueueTypeEmailUpdated:
+		return SendEmailUpdatedEmail(m)
+	case EmailQueueTypeAccountCreated:
+		return SendAccountCreatedEmail(m)
+	case EmailQueueTypeAccountUpdated:
+		return SendAccountUpdatedEmail(m)
+	case EmailQueueTypeOTP:
+		return SendOTPEmail(m)
+	default:
+		log.Debug().Msgf("invalid email type: %s", m.EmailType)
+	}
 
 	return nil
 }

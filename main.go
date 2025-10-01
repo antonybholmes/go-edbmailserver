@@ -7,8 +7,7 @@ import (
 	"os"
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
-	edbmail "github.com/antonybholmes/go-edbmailserver/mail"
-	mailserver "github.com/antonybholmes/go-mailserver"
+
 	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
@@ -20,7 +19,7 @@ import (
 
 func initLogger() {
 	fileLogger := &lumberjack.Logger{
-		Filename:   fmt.Sprintf("logs/%s.log", consts.AppName),
+		Filename:   fmt.Sprintf("logs/%s.log", consts.AppId),
 		MaxSize:    10,   // Max size in MB before rotating
 		MaxBackups: 3,    // Keep 3 backup files
 		MaxAge:     7,    // Retain files for 7 days
@@ -47,7 +46,7 @@ func init() {
 
 	env.Ls()
 
-	from := sys.Must(mail.ParseAddress(env.GetStr("SMTP_FROM", "")))
+	from := sys.Must(mail.ParseAddress(consts.EmailFrom))
 
 	sesmailserver.InitSesMailer(from)
 }
@@ -60,8 +59,14 @@ func main() {
 	// make a thread pool
 	pool := sys.Must(ants.NewPool(10))
 
+	defer pool.Release()
+
+	log.Debug().Msgf("%s %s", consts.AppId, consts.Version)
+
+	consumer := NewSQSConsumer(pool)
+
 	//ConsumeRedis(pool)
-	ConsumeSQS(pool)
+	consumer.ConsumeSQS()
 	//consumeKafka(pool)
 }
 
@@ -100,37 +105,6 @@ func main() {
 // 	}
 // }
 
-func sendEmailUsingPool(m *mailserver.MailItem, pool *ants.Pool) {
-	pool.Submit(func() { sendEmail(m) })
-}
-
-func sendEmail(m *mailserver.MailItem) {
-
-	//log.Debug().Msgf("send email %s %s", m.To, m.EmailType)
-
-	switch m.EmailType {
-	case edbmail.EmailQueueTypeVerify:
-		edbmail.SendVerifyEmail(m)
-	case edbmail.EmailQueueTypeVerified:
-		edbmail.SendVerifiedEmail(m)
-	case edbmail.EmailQueueTypePasswordless:
-		edbmail.SendPasswordlessSigninEmail(m)
-	case edbmail.EmailQueueTypePasswordReset:
-		edbmail.SendPasswordResetEmail(m)
-	case edbmail.EmailQueueTypePasswordUpdated:
-		edbmail.SendPasswordUpdatedEmail(m)
-	case edbmail.EmailQueueTypeEmailReset:
-		edbmail.SendEmailResetEmail(m)
-	case edbmail.EmailQueueTypeEmailUpdated:
-		edbmail.SendEmailUpdatedEmail(m)
-	case edbmail.EmailQueueTypeAccountCreated:
-		edbmail.SendAccountCreatedEmail(m)
-	case edbmail.EmailQueueTypeAccountUpdated:
-		edbmail.SendAccountUpdatedEmail(m)
-	case edbmail.EmailQueueTypeOTP:
-		edbmail.SendOTPEmail(m)
-	default:
-		log.Debug().Msgf("invalid email type: %s", m.EmailType)
-	}
-
-}
+// func sendEmailUsingPool(m *mailserver.MailItem, pool *ants.Pool) {
+// 	pool.Submit(func() { sendEmail(m) })
+// }
