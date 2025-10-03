@@ -3,6 +3,7 @@ package consts
 import (
 	"os"
 
+	"github.com/antonybholmes/go-sys"
 	"github.com/antonybholmes/go-sys/env"
 	"github.com/aws/aws-sdk-go-v2/aws"
 )
@@ -16,11 +17,8 @@ const (
 )
 
 var (
-	Version   string
-	Copyright string
+	Version sys.VersionInfo
 
-	SessionSecret string
-	SessionName   string
 	Updated       string
 	RedisAddr     string
 	RedisPassword string
@@ -33,11 +31,11 @@ var (
 func init() {
 
 	env.Load("consts.env")
-	env.Load("version.env")
+	//env.Load("version.env")
 
-	Version = os.Getenv("VERSION")
-	Updated = os.Getenv("UPDATED")
-	Copyright = os.Getenv("COPYRIGHT")
+	//Version = os.Getenv("VERSION")
+	//Updated = os.Getenv("UPDATED")
+	//Copyright = os.Getenv("COPYRIGHT")
 	UrlVerifyEmail = os.Getenv("URL_VERIFY_EMAIL")
 
 	RedisAddr = os.Getenv("REDIS_ADDR")
@@ -47,11 +45,5 @@ func init() {
 
 	UrlSignIn = os.Getenv("URL_SIGN_IN")
 
-	//URL_PASSWORDLESS_SIGN_IN = os.Getenv("URL_PASSWORDLESS_SIGN_IN")
-
-	//JWT_PRIVATE_KEY = []byte(os.Getenv("JWT_SECRET"))
-	//JWT_PUBLIC_KEY = []byte(os.Getenv("JWT_SECRET"))
-	SessionSecret = os.Getenv("SESSION_SECRET")
-	SessionName = os.Getenv("SESSION_NAME")
-
+	Version = sys.Must(sys.LoadVersionInfo("version.json"))
 }
