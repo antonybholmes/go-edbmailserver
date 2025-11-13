@@ -7,9 +7,9 @@ import (
 	"github.com/antonybholmes/go-edbmailserver/consts"
 	edbmail "github.com/antonybholmes/go-edbmailserver/mail"
 	mailserver "github.com/antonybholmes/go-mailserver"
+	"github.com/antonybholmes/go-sys/log"
 	"github.com/panjf2000/ants"
 	"github.com/redis/go-redis/v9"
-	"github.com/rs/zerolog/log"
 )
 
 func ConsumeRedis(pool *ants.Pool) {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/antonybholmes/go-edbmailserver/consts"
 	mailserver "github.com/antonybholmes/go-mailserver"
-	"github.com/rs/zerolog/log"
+	"github.com/antonybholmes/go-sys/log"
 
 	"github.com/antonybholmes/go-mailserver/sesmailserver"
 	"golang.org/x/text/cases"

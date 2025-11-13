@@ -8,10 +8,10 @@ import (
 	edbmail "github.com/antonybholmes/go-edbmailserver/mail"
 	mailserver "github.com/antonybholmes/go-mailserver"
 	"github.com/antonybholmes/go-sys"
+	"github.com/antonybholmes/go-sys/log"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/panjf2000/ants"
-	"github.com/rs/zerolog/log"
 )
 
 // each SQS receive can get up to 5 messages at a time
@@ -55,7 +55,7 @@ func (c *SQSConsumer) ConsumeSQS() {
 		})
 
 		if err != nil {
-			log.Printf("failed to receive messages: %v", err)
+			log.Error().Msgf("failed to receive messages: %v", err)
 			c.backoff.Sleep()
 			continue
 		}
@@ -63,12 +63,12 @@ func (c *SQSConsumer) ConsumeSQS() {
 		err = c.pool.Submit(func() {
 			err := processMessages(client, ctx, resp)
 			if err != nil {
-				log.Debug().Msgf("error processing messages: %v", err)
+				log.Error().Msgf("error processing messages: %v", err)
 			}
 		})
 
 		if err != nil {
-			log.Debug().Msgf("failed to submit processMessages: %v", err)
+			log.Error().Msgf("failed to submit processMessages: %v", err)
 		}
 
 	}
@@ -82,7 +82,7 @@ func processMessages(client *sqs.Client, ctx context.Context, resp *sqs.ReceiveM
 		err := json.Unmarshal([]byte(*message.Body), &m)
 
 		if err != nil {
-			log.Debug().Msgf("error reading email json: %v", err)
+			log.Error().Msgf("error reading email json: %v", err)
 		}
 
 		handle := message.ReceiptHandle
@@ -93,7 +93,7 @@ func processMessages(client *sqs.Client, ctx context.Context, resp *sqs.ReceiveM
 		})
 
 		if err != nil {
-			log.Debug().Msgf("failed to delete message: %v", err)
+			log.Error().Msgf("failed to delete message: %v", err)
 		}
 
 		log.Debug().Msgf("message deleted: %s", *handle)
@@ -104,7 +104,7 @@ func processMessages(client *sqs.Client, ctx context.Context, resp *sqs.ReceiveM
 		err = edbmail.SendEmail(&m)
 
 		if err != nil {
-			log.Debug().Msgf("error sending email: %v", err)
+			log.Error().Msgf("error sending email: %v", err)
 		}
 	}
 
