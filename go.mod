@@ -7,7 +7,7 @@ replace github.com/antonybholmes/go-mailserver => ../go-mailserver
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20251208175344-5a45ea74fe16
+	github.com/antonybholmes/go-sys v0.0.0-20251211184816-38c1e4f69349
 	github.com/aws/aws-sdk-go-v2 v1.41.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.5
 	github.com/panjf2000/ants v1.3.0
@@ -23,7 +23,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.16 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.16 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.57.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.58.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.0.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.30.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.12 // indirect
@@ -48,7 +48,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailserver v0.0.0-20251208175344-db9d91c6e79d
+	github.com/antonybholmes/go-mailserver v0.0.0-20251211184814-b5d3614809b0
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.20
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
