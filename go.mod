@@ -7,7 +7,7 @@ replace github.com/antonybholmes/go-mailserver => ../go-mailserver
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20260105204539-98810971944a
+	github.com/antonybholmes/go-sys v0.0.0-20260209231212-cfd21298d6eb
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.32.7
 	github.com/panjf2000/ants v1.3.0
@@ -48,7 +48,7 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailserver v0.0.0-20260105204538-217d34fed80c
+	github.com/antonybholmes/go-mailserver v0.0.0-20260209231211-e846a7725b0b
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.21
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
