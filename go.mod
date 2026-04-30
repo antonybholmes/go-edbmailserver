@@ -7,7 +7,7 @@ replace github.com/antonybholmes/go-mailserver => ../go-mailserver
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20260414211834-526fb62c6da0
+	github.com/antonybholmes/go-sys v0.0.0-20260422134523-dadad00d6c60
 	github.com/aws/aws-sdk-go-v2 v1.41.6
 	github.com/aws/aws-sdk-go-v2/config v1.32.16
 	github.com/panjf2000/ants v1.3.0
@@ -27,9 +27,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.30.16 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.20 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.42.0 // indirect
-	github.com/aws/smithy-go v1.25.0 // indirect
+	github.com/aws/smithy-go v1.25.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.18.5 // indirect
 	github.com/matoous/go-nanoid/v2 v2.1.0 // indirect
@@ -37,7 +36,7 @@ require (
 	github.com/richardlehane/mscfb v1.0.6 // indirect
 	github.com/richardlehane/msoleps v1.0.6 // indirect
 	github.com/rs/zerolog v1.35.1 // indirect
-	github.com/segmentio/kafka-go v0.4.50 // indirect
+	github.com/segmentio/kafka-go v0.4.51 // indirect
 	github.com/tiendc/go-deepcopy v1.7.2 // indirect
 	github.com/xuri/efp v0.0.1 // indirect
 	github.com/xuri/excelize/v2 v2.10.1 // indirect
@@ -48,12 +47,12 @@ require (
 )
 
 require (
-	github.com/antonybholmes/go-mailserver v0.0.0-20260414211831-3bf0b2649295
+	github.com/antonybholmes/go-mailserver v0.0.0-20260422134520-10e5eef0f685
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.26
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
-	github.com/mattn/go-isatty v0.0.21 // indirect
-	github.com/redis/go-redis/v9 v9.18.0
+	github.com/mattn/go-isatty v0.0.22 // indirect
+	github.com/redis/go-redis/v9 v9.19.0
 	golang.org/x/sys v0.43.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 )
