@@ -7,11 +7,11 @@ replace github.com/antonybholmes/go-mailserver => ../go-mailserver
 replace github.com/antonybholmes/go-sys => ../go-sys
 
 require (
-	github.com/antonybholmes/go-sys v0.0.0-20260422134523-dadad00d6c60
+	github.com/antonybholmes/go-sys v0.0.0-20260430223651-c5b58e98c9c6
 	github.com/aws/aws-sdk-go-v2 v1.41.7
 	github.com/aws/aws-sdk-go-v2/config v1.32.17
 	github.com/panjf2000/ants v1.3.0
-	golang.org/x/text v0.36.0
+	golang.org/x/text v0.37.0
 )
 
 require (
@@ -42,17 +42,17 @@ require (
 	github.com/xuri/excelize/v2 v2.10.1 // indirect
 	github.com/xuri/nfp v0.0.2-0.20250530014748-2ddeb826f9a9 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
-	golang.org/x/crypto v0.50.0 // indirect
-	golang.org/x/net v0.53.0 // indirect
+	golang.org/x/crypto v0.51.0 // indirect
+	golang.org/x/net v0.54.0 // indirect
 )
 
 require (
-	github.com/antonybholmes/go-mailserver v0.0.0-20260422134520-10e5eef0f685
+	github.com/antonybholmes/go-mailserver v0.0.0-20260430224953-ba9a0b261ea5
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.42.27
 	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/redis/go-redis/v9 v9.19.0
-	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 )
