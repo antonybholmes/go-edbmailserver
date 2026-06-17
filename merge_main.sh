@@ -35,7 +35,8 @@ echo ${branch}
 ./commit.sh -t "${type}" -m "${msg}" -b dev
 
 git switch main
-git merge dev -m "${type}: ${msg}"
+git merge dev -m "${type}: ${msg}" -X theirs
+git checkout dev -- version.json
 
 #git push -u origin main
 ./commit.sh -t "${type}" -m "${msg}" -b main
